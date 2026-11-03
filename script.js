@@ -33,7 +33,7 @@ const spring = (initial = 0, opts = {}) => {
   const btn = document.querySelector('[data-theme-toggle]');
   const meta = document.querySelector('meta[name="theme-color"]');
   const mq = window.matchMedia('(prefers-color-scheme: light)');
-  const COLOR = { light: '#f4f5ed', dark: '#0a0b09' };
+  const COLOR = { light: '#f5f6ee', dark: '#0a0b09' };
 
   const current = () => (root.dataset.theme === 'light' ? 'light' : 'dark');
 
@@ -49,26 +49,28 @@ const spring = (initial = 0, opts = {}) => {
 
   apply(current(), false);
 
+  window.toggleThemeMode = () => {
+    const next = current() === 'light' ? 'dark' : 'light';
+    const supported = typeof document.startViewTransition === 'function';
+    if (!supported || reducedMotion()) {
+      apply(next, true);
+      return;
+    }
+    const rect = btn ? btn.getBoundingClientRect() : { left: window.innerWidth / 2, top: 40, width: 0, height: 0 };
+    const x = rect.left + rect.width / 2;
+    const y = rect.top + rect.height / 2;
+    const endR = Math.hypot(
+      Math.max(x, window.innerWidth - x),
+      Math.max(y, window.innerHeight - y)
+    );
+    root.style.setProperty('--theme-clip-x', `${x}px`);
+    root.style.setProperty('--theme-clip-y', `${y}px`);
+    root.style.setProperty('--theme-clip-r', `${endR}px`);
+    document.startViewTransition(() => apply(next, true));
+  };
+
   if (btn) {
-    btn.addEventListener('click', () => {
-      const next = current() === 'light' ? 'dark' : 'light';
-      const supported = typeof document.startViewTransition === 'function';
-      if (!supported || reducedMotion()) {
-        apply(next, true);
-        return;
-      }
-      const rect = btn.getBoundingClientRect();
-      const x = rect.left + rect.width / 2;
-      const y = rect.top + rect.height / 2;
-      const endR = Math.hypot(
-        Math.max(x, window.innerWidth - x),
-        Math.max(y, window.innerHeight - y)
-      );
-      root.style.setProperty('--theme-clip-x', `${x}px`);
-      root.style.setProperty('--theme-clip-y', `${y}px`);
-      root.style.setProperty('--theme-clip-r', `${endR}px`);
-      document.startViewTransition(() => apply(next, true));
-    });
+    btn.addEventListener('click', () => window.toggleThemeMode());
   }
 
   const onMqChange = (e) => {
@@ -105,27 +107,33 @@ const spring = (initial = 0, opts = {}) => {
   setInterval(tick, 30000);
 })();
 
-// ── Hero Subtitle Typewriter Engine (Auto-Typing Loop) ─────────────────────
+// ── Hero Subtitle Typewriter Engine (Dynamic LocalStorage Powered) ─────────
+let globalTypewriterTick = null;
 (() => {
   const target = document.querySelector('[data-typed-hero]');
   if (!target) return;
 
-  const roles = [
-    'UG STUDENT', 
-    'FULL-STACK DEVELOPER',
-    'GRAPHICS DESIGNER',
-    'CREATIVE BUILDER'
-  ];
+  const getRoles = () => {
+    try {
+      const stored = localStorage.getItem('portfolio_roles');
+      if (stored) return JSON.parse(stored);
+    } catch (_) {}
+    return ['UG STUDENT', 'FULL-STACK DEVELOPER', 'GRAPHICS DESIGNER', 'CREATIVE BUILDER'];
+  };
 
+  let roles = getRoles();
   let roleIdx = 0;
   let charIdx = 0;
   let isDeleting = false;
   const TYPE_SPEED = 90;
   const DELETE_SPEED = 45;
   const PAUSE_TIME = 1600;
+  let timerId = null;
 
   const tick = () => {
-    const currentText = roles[roleIdx];
+    roles = getRoles();
+    if (!roles.length) return;
+    const currentText = roles[roleIdx % roles.length];
 
     if (isDeleting) {
       charIdx--;
@@ -146,10 +154,18 @@ const spring = (initial = 0, opts = {}) => {
       delay = 350;
     }
 
-    setTimeout(tick, delay);
+    timerId = setTimeout(tick, delay);
   };
 
   tick();
+
+  window.refreshTypewriterRoles = () => {
+    clearTimeout(timerId);
+    roleIdx = 0;
+    charIdx = 0;
+    isDeleting = false;
+    tick();
+  };
 })();
 
 // ── Hero Meta & CTA Fade In ───────────────────────────────────────────────
@@ -258,7 +274,9 @@ const spring = (initial = 0, opts = {}) => {
 
   let enabled = window.innerWidth > 760;
   let maxX = 0;
-  const measure = () => { maxX = Math.max(0, track.scrollWidth - window.innerWidth); };
+  window.measureWorkRail = () => { 
+    maxX = Math.max(0, track.scrollWidth - window.innerWidth); 
+  };
   const apply = () => {
     if (!enabled) {
       track.style.transform = '';
@@ -273,7 +291,7 @@ const spring = (initial = 0, opts = {}) => {
     const p = Math.min(1, Math.max(0, -r.top / total));
     track.style.transform = `translate3d(${-p * maxX}px, 0, 0)`;
   };
-  measure();
+  window.measureWorkRail();
 
   let raf;
   const onScroll = () => {
@@ -282,7 +300,7 @@ const spring = (initial = 0, opts = {}) => {
   };
   const onResize = () => {
     enabled = window.innerWidth > 760;
-    measure();
+    window.measureWorkRail();
     apply();
   };
   window.addEventListener('scroll', onScroll, { passive: true });
@@ -290,7 +308,7 @@ const spring = (initial = 0, opts = {}) => {
   apply();
 })();
 
-// ── Flow Field Generative Hero Canvas (Video Style Active Reaction) ────────
+// ── Flow Field Generative Hero Canvas ─────────────────────────────────────
 (() => {
   const canvas = document.querySelector('[data-hero-canvas]');
   const hero = document.querySelector('.hero');
@@ -318,8 +336,8 @@ const spring = (initial = 0, opts = {}) => {
     p.px = p.x;
     p.py = p.y;
     p.sp = 18 + Math.random() * 26;
-    p.isYellow = Math.random() < 0.45;
-    p.a = 0.2 + Math.random() * 0.5;
+    p.isAccent = Math.random() < 0.45;
+    p.a = 0.22 + Math.random() * 0.48;
     p.life = 3 + Math.random() * 6;
   };
 
@@ -352,6 +370,8 @@ const spring = (initial = 0, opts = {}) => {
     mx += (targetMx - mx) * 0.18;
     my += (targetMy - my) * 0.18;
 
+    const isLight = document.documentElement.dataset.theme === 'light';
+
     parts.forEach((p) => {
       const a = field(p.x, p.y, t);
       let vx = Math.cos(a) * p.sp;
@@ -379,9 +399,16 @@ const spring = (initial = 0, opts = {}) => {
         return;
       }
 
-      ctx.strokeStyle = p.isYellow
-        ? `rgba(255, 230, 0, ${p.a})`
-        : `rgba(237, 240, 227, ${p.a * 0.4})`;
+      if (isLight) {
+        ctx.strokeStyle = p.isAccent
+          ? `rgba(107, 143, 8, ${p.a * 0.75})`
+          : `rgba(20, 22, 14, ${p.a * 0.28})`;
+      } else {
+        ctx.strokeStyle = p.isAccent
+          ? `rgba(255, 230, 0, ${p.a})`
+          : `rgba(237, 240, 227, ${p.a * 0.4})`;
+      }
+
       ctx.lineWidth = 1.2;
       ctx.beginPath();
       ctx.moveTo(p.px, p.py);
@@ -406,9 +433,13 @@ const spring = (initial = 0, opts = {}) => {
 
   requestAnimationFrame(loop);
   window.addEventListener('resize', resize);
+
+  new MutationObserver(() => {
+    ctx.clearRect(0, 0, w, h);
+  }).observe(document.documentElement, { attributes: true, attributeFilter: ['data-theme'] });
 })();
 
-// ── SVG Generated Art ─────────────────────────────────────────────────────
+// ── Procedural Dynamic Cyber Art Generator (URL/Title Seeded) ──────────────
 (() => {
   const NS = 'http://www.w3.org/2000/svg';
   const svg = (tag, attrs) => {
@@ -417,37 +448,154 @@ const spring = (initial = 0, opts = {}) => {
     return e;
   };
 
-  const mesh = document.querySelector('[data-mesh-art]');
-  if (mesh) {
-    const s = svg('svg', { width: '200', height: '180', viewBox: '0 0 200 180', 'aria-hidden': 'true' });
-    const g = svg('g', { stroke: 'var(--ink-mute)', 'stroke-width': '.6', fill: 'none' });
-    for (let r = 0; r < 6; r++) {
-      for (let c = 0; c < 7; c++) {
-        const x = 14 + c * 28 + (r % 2 === 0 ? 0 : 14);
-        const y = 14 + r * 28;
-        const cir = svg('circle', { cx: x, cy: y, r: '1.4', fill: 'var(--ink-soft)', stroke: 'none' });
-        g.appendChild(cir);
-        if (c < 6) g.appendChild(svg('line', { x1: x, y1: y, x2: x + 28, y2: y }));
-        if (r < 5 && c < 7) g.appendChild(svg('line', { x1: x, y1: y, x2: x + (r % 2 === 0 ? 14 : -14), y2: y + 28 }));
-      }
+  const hashString = (str) => {
+    let hash = 0;
+    for (let i = 0; i < str.length; i++) {
+      hash = (hash << 5) - hash + str.charCodeAt(i);
+      hash |= 0;
     }
-    s.appendChild(g);
-    mesh.appendChild(s);
-  }
+    return Math.abs(hash);
+  };
 
-  const grid = document.querySelector('[data-grid-art]');
-  if (grid) {
+  // Pattern 1: Concentric Orbital Gyro Rings
+  const renderGyroArt = (container, seed) => {
     const s = svg('svg', { width: '200', height: '160', viewBox: '0 0 200 160', 'aria-hidden': 'true' });
-    for (let r = 0; r < 6; r++) {
-      for (let c = 0; c < 8; c++) {
-        s.appendChild(svg('rect', { x: 4 + c * 24, y: 4 + r * 24, width: '20', height: '20', fill: 'none', stroke: 'var(--line-strong)' }));
+    const rings = 4 + (seed % 3);
+    for (let i = 1; i <= rings; i++) {
+      const r = i * 16;
+      s.appendChild(svg('circle', {
+        cx: 100, cy: 80, r,
+        fill: 'none',
+        stroke: i % 2 === 0 ? 'var(--line-strong)' : 'var(--ink-mute)',
+        'stroke-width': '1',
+        'stroke-dasharray': `${(seed % 5) + 3} 4`
+      }));
+    }
+    const nodes = 6 + (seed % 6);
+    for (let i = 0; i < nodes; i++) {
+      const angle = (i * 2 * Math.PI) / nodes;
+      const x = 100 + Math.cos(angle) * 48;
+      const y = 80 + Math.sin(angle) * 48;
+      s.appendChild(svg('line', { x1: 100, y1: 80, x2: x, y2: y, stroke: 'var(--line)', 'stroke-width': '1' }));
+      s.appendChild(svg('circle', { cx: x, cy: y, r: (i % 2 === 0 ? 3 : 2), fill: (i === 1 ? 'var(--highlight-color)' : 'var(--accent)') }));
+    }
+    container.innerHTML = '';
+    container.appendChild(s);
+  };
+
+  // Pattern 2: Cyber Matrix Heatmap Grid
+  const renderGridMatrixArt = (container, seed) => {
+    const s = svg('svg', { width: '200', height: '160', viewBox: '0 0 200 160', 'aria-hidden': 'true' });
+    const cols = 8;
+    const rows = 6;
+    for (let r = 0; r < rows; r++) {
+      for (let c = 0; c < cols; c++) {
+        const x = 8 + c * 23;
+        const y = 8 + r * 24;
+        const cellVal = (seed + r * 7 + c * 13) % 19;
+        let fill = 'none';
+        let stroke = 'var(--line-strong)';
+        let opacity = '1';
+
+        if (cellVal === 2) {
+          fill = 'var(--accent)';
+          opacity = '0.85';
+        } else if (cellVal === 5) {
+          fill = 'var(--highlight-color)';
+          opacity = '0.9';
+        } else if (cellVal === 9) {
+          fill = 'var(--ink)';
+          opacity = '0.6';
+        }
+
+        s.appendChild(svg('rect', {
+          x, y, width: '18', height: '18',
+          rx: '3', fill, stroke,
+          'stroke-width': '0.8',
+          opacity
+        }));
       }
     }
-    s.appendChild(svg('rect', { x: 4 + 3 * 24, y: 4 + 2 * 24, width: '20', height: '20', fill: 'var(--accent)', opacity: '.5' }));
-    s.appendChild(svg('rect', { x: 4 + 5 * 24, y: 4 + 1 * 24, width: '20', height: '20', fill: 'var(--ink)' }));
-    grid.appendChild(s);
-  }
+    container.innerHTML = '';
+    container.appendChild(s);
+  };
 
+  // Pattern 3: Cyber Wave Spectrum
+  const renderWaveArt = (container, seed) => {
+    const s = svg('svg', { width: '200', height: '160', viewBox: '0 0 200 160', 'aria-hidden': 'true' });
+    const bars = 18;
+    for (let i = 0; i < bars; i++) {
+      const x = 12 + i * 10;
+      const h = 20 + Math.abs(Math.sin((seed + i) * 0.45) * 80);
+      const y = 80 - h / 2;
+      const isPeak = (i === (seed % bars));
+      s.appendChild(svg('rect', {
+        x, y, width: '4', height: h,
+        rx: '2',
+        fill: isPeak ? 'var(--highlight-color)' : (i % 3 === 0 ? 'var(--accent)' : 'var(--ink-mute)'),
+        opacity: isPeak ? '1' : '0.5'
+      }));
+    }
+    container.innerHTML = '';
+    container.appendChild(s);
+  };
+
+  // Pattern 4: Constellation Node Network
+  const renderNetworkArt = (container, seed) => {
+    const s = svg('svg', { width: '200', height: '160', viewBox: '0 0 200 160', 'aria-hidden': 'true' });
+    const pts = [];
+    const count = 7 + (seed % 4);
+    for (let i = 0; i < count; i++) {
+      pts.push({
+        x: 20 + ((seed * (i + 3) * 31) % 160),
+        y: 20 + ((seed * (i + 7) * 47) % 120),
+        r: (i === 0 ? 4.5 : 2.5)
+      });
+    }
+    for (let i = 0; i < pts.length; i++) {
+      for (let j = i + 1; j < pts.length; j++) {
+        const d = Math.hypot(pts[i].x - pts[j].x, pts[i].y - pts[j].y);
+        if (d < 75) {
+          s.appendChild(svg('line', {
+            x1: pts[i].x, y1: pts[i].y, x2: pts[j].x, y2: pts[j].y,
+            stroke: 'var(--ink-mute)',
+            'stroke-width': '0.7',
+            opacity: '0.45'
+          }));
+        }
+      }
+    }
+    pts.forEach((p, idx) => {
+      s.appendChild(svg('circle', {
+        cx: p.x, cy: p.y, r: p.r,
+        fill: idx === 0 ? 'var(--highlight-color)' : (idx % 2 === 0 ? 'var(--accent)' : 'var(--ink-soft)')
+      }));
+    });
+    container.innerHTML = '';
+    container.appendChild(s);
+  };
+
+  window.autoGenerateCardArt = () => {
+    document.querySelectorAll('.work-card').forEach((card) => {
+      const artBox = card.querySelector('.work-card__art');
+      if (!artBox || artBox.querySelector('.github-stats-widget')) return;
+
+      const title = card.querySelector('.work-card__title')?.textContent || '';
+      const link = card.querySelector('a[href]')?.getAttribute('href') || '';
+      const seedKey = (title + link).trim() || 'default-project';
+      const seed = hashString(seedKey);
+
+      const patternType = seed % 4;
+      if (patternType === 0) renderGyroArt(artBox, seed);
+      else if (patternType === 1) renderGridMatrixArt(artBox, seed);
+      else if (patternType === 2) renderWaveArt(artBox, seed);
+      else renderNetworkArt(artBox, seed);
+    });
+  };
+
+  window.autoGenerateCardArt();
+
+  // Roadmap Blueprint Art
   const ga = document.querySelector('[data-graph-art]');
   if (ga) {
     const nodes = [
@@ -518,6 +666,342 @@ const spring = (initial = 0, opts = {}) => {
       }
     });
   });
+})();
+
+// ── Bento Grid Animated DSA Counter ───────────────────────────────────────
+(() => {
+  const countEl = document.getElementById('bento-dsa-count');
+  if (!countEl) return;
+
+  const target = 120;
+  let started = false;
+
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach((entry) => {
+      if (entry.isIntersecting && !started) {
+        started = true;
+        let current = 0;
+        const stepTime = 12;
+        const timer = setInterval(() => {
+          current += 2;
+          if (current >= target) {
+            countEl.textContent = `${target}+`;
+            clearInterval(timer);
+          } else {
+            countEl.textContent = `${current}+`;
+          }
+        }, stepTime);
+        observer.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.4 });
+
+  observer.observe(countEl);
+})();
+
+// ── Interactive Code Sandbox Runner ───────────────────────────────────────
+(() => {
+  const tabs = document.querySelectorAll('.sandbox-tab');
+  const codeEl = document.getElementById('sandbox-code');
+  const runBtn = document.querySelector('[data-sandbox-run]');
+  const statusEl = document.getElementById('sandbox-status');
+  const outputEl = document.getElementById('sandbox-output');
+
+  if (!codeEl || !runBtn || !outputEl) return;
+
+  const SNIPPETS = {
+    cpp: {
+      code: `// Fast I/O & Binary Search Template
+#include <iostream>
+#include <vector>
+using namespace std;
+
+int binarySearch(const vector<int>& arr, int target) {
+    int left = 0, right = arr.size() - 1;
+    while (left <= right) {
+        int mid = left + (right - left) / 2;
+        if (arr[mid] == target) return mid;
+        if (arr[mid] < target) left = mid + 1;
+        else right = mid - 1;
+    }
+    return -1;
+}
+
+int main() {
+    vector<int> data = {2, 7, 11, 15, 24, 38, 56};
+    int found = binarySearch(data, 24);
+    cout << "Target 24 indexed at: " << found << endl;
+    return 0;
+}`,
+      output: `[g++ -O3 -std=c++17 main.cpp -o main]
+Target 24 indexed at: 4
+
+Process exited with status 0 (0.018s, mem: 2.1MB)`
+    },
+    java: {
+      code: `// Modular OOP System Simulation
+import java.util.*;
+
+class ProcessScheduler {
+    private final PriorityQueue<Integer> pq = new PriorityQueue<>();
+
+    public void enqueue(int task) { pq.offer(task); }
+    public Integer dispatch() { return pq.poll(); }
+}
+
+public class Solution {
+    public static void main(String[] args) {
+        ProcessScheduler ps = new ProcessScheduler();
+        ps.enqueue(40);
+        ps.enqueue(10);
+        ps.enqueue(25);
+        System.out.println("Dispatched root priority: " + ps.dispatch());
+    }
+}`,
+      output: `[javac Solution.java && java Solution]
+Dispatched root priority: 10
+
+JVM execution finalized (0.042s, thread_pool: 1)`
+    },
+    python: {
+      code: `# Automation & Structured Data Parsing
+import json
+
+def summarize_telemetry(payload):
+    data = json.loads(payload)
+    active = [k for k, v in data.items() if v]
+    return f"Active sub-modules: {', '.join(active)}"
+
+feed = '{"dsa_stream": true, "web_audio": true, "telemetry_pill": true}'
+print(summarize_telemetry(feed))`,
+      output: `[python3 script.py]
+Active sub-modules: dsa_stream, web_audio, telemetry_pill
+
+Traceback free · Memory allocated: 840KB`
+    }
+  };
+
+  let activeLang = 'cpp';
+
+  tabs.forEach((tab) => {
+    tab.addEventListener('click', () => {
+      tabs.forEach((t) => t.classList.remove('active'));
+      tab.classList.add('active');
+      activeLang = tab.dataset.lang;
+      codeEl.textContent = SNIPPETS[activeLang].code;
+      outputEl.textContent = 'Ready to execute. Click "RUN CODE" to compile...';
+      if (statusEl) {
+        statusEl.textContent = 'IDLE';
+        statusEl.style.color = 'var(--accent)';
+      }
+    });
+  });
+
+  runBtn.addEventListener('click', () => {
+    if (statusEl) {
+      statusEl.textContent = 'COMPILING...';
+      statusEl.style.color = 'var(--highlight-color)';
+    }
+    outputEl.textContent = `Executing runtime container [${activeLang}]...`;
+
+    setTimeout(() => {
+      outputEl.textContent = SNIPPETS[activeLang].output;
+      if (statusEl) {
+        statusEl.textContent = 'SUCCESS (0)';
+        statusEl.style.color = '#00ff88';
+      }
+    }, 420);
+  });
+})();
+
+// ── Live Cyber Telemetry HUD Pill (FPS & Velocity Tracker) ────────────────
+(() => {
+  const fpsEl = document.querySelector('[data-telemetry-fps]');
+  const velEl = document.querySelector('[data-telemetry-vel]');
+  if (!fpsEl && !velEl) return;
+
+  let lastFrameTime = performance.now();
+  let frameCount = 0;
+  let lastFpsUpdate = performance.now();
+
+  let lastScrollY = window.scrollY;
+  let lastScrollTime = performance.now();
+  let currentVel = 0;
+
+  const updateTelemetry = (now) => {
+    frameCount++;
+    if (now - lastFpsUpdate >= 500) {
+      const fps = Math.round((frameCount * 1000) / (now - lastFpsUpdate));
+      if (fpsEl) fpsEl.textContent = `${fps} FPS`;
+      frameCount = 0;
+      lastFpsUpdate = now;
+    }
+
+    const dt = Math.max((now - lastScrollTime) / 1000, 0.016);
+    const dy = Math.abs(window.scrollY - lastScrollY);
+    const instantVel = Math.round(dy / dt);
+    currentVel = Math.round(currentVel * 0.8 + instantVel * 0.2);
+
+    lastScrollY = window.scrollY;
+    lastScrollTime = now;
+
+    if (velEl) velEl.textContent = `${currentVel} PX/S`;
+
+    requestAnimationFrame(updateTelemetry);
+  };
+
+  requestAnimationFrame(updateTelemetry);
+})();
+
+// ── Cmd + K Developer Command Palette (Spotlight Terminal) ────────────────
+(() => {
+  const backdrop = document.getElementById('cmdk-modal');
+  const input = document.getElementById('cmdk-query');
+  const list = document.getElementById('cmdk-list');
+  const triggerBtn = document.querySelector('[data-cmdk-trigger]');
+  if (!backdrop || !input || !list) return;
+
+  let activeIndex = 0;
+
+  const COMMANDS = [
+    { title: 'Jump to Selected Work', category: 'Navigation', shortcut: 'G W', action: () => { location.hash = '#work'; } },
+    { title: 'Jump to About & Education', category: 'Navigation', shortcut: 'G A', action: () => { location.hash = '#about'; } },
+    { title: 'Jump to Practice Tracks', category: 'Navigation', shortcut: 'G P', action: () => { location.hash = '#experiments'; } },
+    { title: 'Jump to Roadmap Blueprint', category: 'Navigation', shortcut: 'G R', action: () => { location.hash = '#roadmap'; } },
+    { title: 'Say Hello / Contact', category: 'Navigation', shortcut: 'G C', action: () => { location.hash = '#contact'; } },
+    { title: 'Toggle Light / Dark Theme', category: 'Preferences', shortcut: 'T', action: () => { if (window.toggleThemeMode) window.toggleThemeMode(); } },
+    { title: 'Copy Email Address', category: 'Action', shortcut: 'C', action: () => { document.querySelector('[data-copy-email]')?.click(); } },
+    { title: 'Trigger Matrix Rain Simulation', category: 'Terminal Easter Egg', shortcut: 'M', action: () => runMatrixRain() },
+    { title: 'Open GitHub Profile', category: 'External', shortcut: '↗', action: () => window.open('https://github.com/max-subh', '_blank') },
+  ];
+
+  let filtered = [...COMMANDS];
+
+  const renderItems = () => {
+    list.innerHTML = '';
+    if (!filtered.length) {
+      list.innerHTML = `<div style="padding: 16px; text-align: center; color: var(--ink-mute); font-size: 13px;">No matching command found.</div>`;
+      return;
+    }
+
+    filtered.forEach((cmd, idx) => {
+      const item = document.createElement('div');
+      item.className = `cmdk-item ${idx === activeIndex ? 'is-selected' : ''}`;
+      item.innerHTML = `
+        <div class="cmdk-item__left">
+          <span>›</span>
+          <b>${cmd.title}</b>
+        </div>
+        <span class="cmdk-item__shortcut">${cmd.shortcut}</span>
+      `;
+      item.addEventListener('click', () => {
+        closePalette();
+        cmd.action();
+      });
+      list.appendChild(item);
+    });
+
+    const selectedEl = list.children[activeIndex];
+    if (selectedEl) selectedEl.scrollIntoView({ block: 'nearest' });
+  };
+
+  const openPalette = () => {
+    backdrop.style.display = 'grid';
+    backdrop.setAttribute('aria-hidden', 'false');
+    input.value = '';
+    filtered = [...COMMANDS];
+    activeIndex = 0;
+    renderItems();
+    setTimeout(() => input.focus(), 20);
+    document.body.style.overflow = 'hidden';
+  };
+
+  const closePalette = () => {
+    backdrop.style.display = 'none';
+    backdrop.setAttribute('aria-hidden', 'true');
+    document.body.style.overflow = '';
+  };
+
+  if (triggerBtn) triggerBtn.addEventListener('click', openPalette);
+  backdrop.addEventListener('click', (e) => {
+    if (e.target === backdrop) closePalette();
+  });
+
+  input.addEventListener('input', () => {
+    const q = input.value.trim().toLowerCase();
+    filtered = COMMANDS.filter(c => c.title.toLowerCase().includes(q) || c.category.toLowerCase().includes(q));
+    activeIndex = 0;
+    renderItems();
+  });
+
+  input.addEventListener('keydown', (e) => {
+    if (e.key === 'ArrowDown') {
+      e.preventDefault();
+      if (filtered.length) activeIndex = (activeIndex + 1) % filtered.length;
+      renderItems();
+    } else if (e.key === 'ArrowUp') {
+      e.preventDefault();
+      if (filtered.length) activeIndex = (activeIndex - 1 + filtered.length) % filtered.length;
+      renderItems();
+    } else if (e.key === 'Enter') {
+      e.preventDefault();
+      if (filtered[activeIndex]) {
+        closePalette();
+        filtered[activeIndex].action();
+      }
+    } else if (e.key === 'Escape') {
+      closePalette();
+    }
+  });
+
+  window.addEventListener('keydown', (e) => {
+    if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 'k') {
+      e.preventDefault();
+      if (backdrop.style.display === 'grid') closePalette();
+      else openPalette();
+    }
+  });
+
+  const runMatrixRain = () => {
+    const c = document.createElement('canvas');
+    c.id = 'matrix-canvas';
+    c.style.cssText = 'position: fixed; inset: 0; z-index: 99999; pointer-events: none; opacity: 0.92;';
+    document.body.appendChild(c);
+    const ctx = c.getContext('2d');
+    let cw = c.width = window.innerWidth;
+    let ch = c.height = window.innerHeight;
+    const chars = '01SUBHAMSHITJAVA+C++PYTHONDSAMEDINIPUR#@$%&*';
+    const fontSize = 14;
+    const cols = Math.floor(cw / fontSize);
+    const drops = Array(cols).fill(1);
+
+    let rafId;
+    const draw = () => {
+      ctx.fillStyle = 'rgba(10, 11, 9, 0.08)';
+      ctx.fillRect(0, 0, cw, ch);
+      ctx.fillStyle = '#00ff88';
+      ctx.font = `${fontSize}px monospace`;
+      for (let i = 0; i < drops.length; i++) {
+        const text = chars.charAt(Math.floor(Math.random() * chars.length));
+        ctx.fillText(text, i * fontSize, drops[i] * fontSize);
+        if (drops[i] * fontSize > ch && Math.random() > 0.975) drops[i] = 0;
+        drops[i]++;
+      }
+      rafId = requestAnimationFrame(draw);
+    };
+    rafId = requestAnimationFrame(draw);
+
+    const onExit = (e) => {
+      if (e.key === 'Escape' || e.type === 'click') {
+        cancelAnimationFrame(rafId);
+        c.remove();
+        window.removeEventListener('keydown', onExit);
+        window.removeEventListener('click', onExit);
+      }
+    };
+    window.addEventListener('keydown', onExit);
+    window.addEventListener('click', onExit);
+  };
 })();
 
 // ── Case Study Data ────────────────────────────────────────────────────────
@@ -623,7 +1107,7 @@ const CASE_ORDER = ['portfolio', 'birthday', 'github'];
     const liveBtn = c.live ? `
       <a class="case__live" href="${c.live}" target="_blank" rel="noreferrer">
         Visit project
-        <svg width="11" height="11" viewBox="0 0 12 12" fill="none"><path d="M1 11L11 1M11 1H4M11 1V8" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        <svg width="11" height="11" viewBox="0 0 12 12" fill="none"><path d="M1 11L11 1H4M11 1V8" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
       </a>` : '';
     const nextBtn = isWork && nextId ? `
       <button class="case__next-cta" data-open-case="${nextId}">
@@ -858,8 +1342,7 @@ const CASE_ORDER = ['portfolio', 'birthday', 'github'];
   };
   requestAnimationFrame(tick);
 
-  // Work card & Edu card 3D tilt
-  document.querySelectorAll('.work-card, .edu-card').forEach((card) => {
+  document.querySelectorAll('.work-card, .edu-card, .bento-card').forEach((card) => {
     const rxS = spring(0, { stiffness: 140, damping: 18 });
     const ryS = spring(0, { stiffness: 140, damping: 18 });
     const tzS = spring(0, { stiffness: 200, damping: 22 });
@@ -897,7 +1380,7 @@ const CASE_ORDER = ['portfolio', 'birthday', 'github'];
 // ── Card Cursor Spotlight ─────────────────────────────────────────────────
 (() => {
   if (window.matchMedia('(pointer: coarse)').matches) return;
-  document.querySelectorAll('.work-card, .exp-card, .edu-card, .ai-feature').forEach((card) => {
+  document.querySelectorAll('.work-card, .exp-card, .edu-card, .ai-feature, .bento-card').forEach((card) => {
     card.addEventListener('pointermove', (e) => {
       const r = card.getBoundingClientRect();
       card.style.setProperty('--mx', `${e.clientX - r.left}px`);
@@ -906,44 +1389,140 @@ const CASE_ORDER = ['portfolio', 'birthday', 'github'];
   });
 })();
 
-// ── Persistent Projects with Temporary Admin Button ──────────────────────
+// ── Admin Console Controller (Projects, Typewriter & Meta Status) ──────────
 (() => {
   const SECRET_KEY = 'subham24';
   const urlParams = new URLSearchParams(window.location.search);
-
-  const showAdminButton = urlParams.get('admin') === SECRET_KEY;
+  const showAdmin = urlParams.get('admin') === SECRET_KEY;
 
   const trigger = document.getElementById('admin-trigger');
   const modal = document.getElementById('admin-modal');
   const openBtn = document.getElementById('admin-open-btn');
   const closeBtn = document.getElementById('admin-close-btn');
-  const form = document.getElementById('admin-project-form');
   const track = document.querySelector('[data-work-track]');
+  const statusEl = document.querySelector('.hero__status');
 
-  if (showAdminButton && trigger) {
+  const savedStatus = localStorage.getItem('portfolio_meta_status');
+  if (savedStatus && statusEl) {
+    statusEl.innerHTML = `<i aria-hidden="true"></i>${savedStatus}`;
+  }
+
+  if (showAdmin && trigger) {
     trigger.style.display = 'block';
-  } else if (trigger) {
-    trigger.style.display = 'none';
   }
 
   if (openBtn && modal) {
-    openBtn.addEventListener('click', () => { modal.style.display = 'grid'; });
+    openBtn.addEventListener('click', () => {
+      modal.style.display = 'grid';
+      renderRolesList();
+      renderCustomProjects();
+      const statusInput = document.getElementById('adm-status-input');
+      if (statusInput && statusEl) {
+        statusInput.value = statusEl.textContent.trim();
+      }
+    });
   }
 
   if (closeBtn && modal) {
     closeBtn.addEventListener('click', () => { modal.style.display = 'none'; });
   }
 
+  const tabBtns = document.querySelectorAll('.admin-tab-btn');
+  const panes = document.querySelectorAll('.admin-pane');
+  tabBtns.forEach(btn => {
+    btn.addEventListener('click', () => {
+      tabBtns.forEach(b => {
+        b.style.background = 'transparent';
+        b.style.color = 'var(--ink-mute)';
+        b.style.border = '1px solid var(--line)';
+      });
+      panes.forEach(p => p.style.display = 'none');
+
+      btn.style.background = 'var(--accent)';
+      btn.style.color = 'var(--ink-on-accent)';
+      btn.style.border = 'none';
+
+      const target = document.querySelector(btn.dataset.admTarget);
+      if (target) target.style.display = 'block';
+    });
+  });
+
+  const rolesContainer = document.getElementById('adm-roles-list');
+  const addRoleBtn = document.getElementById('adm-add-role-btn');
+  const newRoleInput = document.getElementById('adm-new-role-input');
+
+  const getRoles = () => {
+    try {
+      const stored = localStorage.getItem('portfolio_roles');
+      if (stored) return JSON.parse(stored);
+    } catch (_) {}
+    return ['UG STUDENT', 'FULL-STACK DEVELOPER', 'GRAPHICS DESIGNER', 'CREATIVE BUILDER'];
+  };
+
+  const renderRolesList = () => {
+    if (!rolesContainer) return;
+    const roles = getRoles();
+    rolesContainer.innerHTML = '';
+    roles.forEach((r, idx) => {
+      const item = document.createElement('div');
+      item.style.cssText = 'display: flex; justify-content: space-between; align-items: center; background: var(--bg); padding: 8px 12px; border-radius: 6px; border: 1px solid var(--line); font-size: 12px; font-family: var(--font-mono);';
+      item.innerHTML = `
+        <span>${r}</span>
+        <button type="button" data-del-role="${idx}" style="color: #ff4757; cursor: pointer; border: none; background: none; font-size: 14px;">✕</button>
+      `;
+      rolesContainer.appendChild(item);
+    });
+
+    rolesContainer.querySelectorAll('[data-del-role]').forEach(b => {
+      b.addEventListener('click', () => {
+        const i = Number(b.dataset.delRole);
+        const current = getRoles();
+        current.splice(i, 1);
+        localStorage.setItem('portfolio_roles', JSON.stringify(current));
+        renderRolesList();
+        if (window.refreshTypewriterRoles) window.refreshTypewriterRoles();
+      });
+    });
+  };
+
+  if (addRoleBtn && newRoleInput) {
+    addRoleBtn.addEventListener('click', () => {
+      const val = newRoleInput.value.trim().toUpperCase();
+      if (!val) return;
+      const current = getRoles();
+      current.push(val);
+      localStorage.setItem('portfolio_roles', JSON.stringify(current));
+      newRoleInput.value = '';
+      renderRolesList();
+      if (window.refreshTypewriterRoles) window.refreshTypewriterRoles();
+    });
+  }
+
+  const saveStatusBtn = document.getElementById('adm-save-status-btn');
+  const statusInput = document.getElementById('adm-status-input');
+  if (saveStatusBtn && statusInput) {
+    saveStatusBtn.addEventListener('click', () => {
+      const val = statusInput.value.trim();
+      if (!val) return;
+      localStorage.setItem('portfolio_meta_status', val);
+      if (statusEl) statusEl.innerHTML = `<i aria-hidden="true"></i>${val}`;
+      alert('Status text updated!');
+    });
+  }
+
+  const form = document.getElementById('admin-project-form');
+  const manageProjectsContainer = document.getElementById('adm-custom-proj-list');
+
   const createCardElement = (proj, num) => {
     const article = document.createElement('article');
-    article.className = 'work-card js-physics';
+    article.className = 'work-card js-physics custom-dyn-card';
     article.innerHTML = `
       <div class="work-card__hit">
         <div class="work-card__head">
           <span>Project</span>
           <span class="work-card__num">${String(num).padStart(2, '0')}</span>
         </div>
-        <div class="work-card__art" data-mesh-art></div>
+        <div class="work-card__art"></div>
         <div class="work-card__body">
           <h3 class="work-card__title">${proj.title}</h3>
           <p class="work-card__blurb">${proj.desc}</p>
@@ -962,10 +1541,46 @@ const CASE_ORDER = ['portfolio', 'birthday', 'github'];
 
   const loadCustomProjects = () => {
     if (!track) return;
+    document.querySelectorAll('.custom-dyn-card').forEach(el => el.remove());
     const saved = JSON.parse(localStorage.getItem('custom_projects') || '[]');
     saved.forEach((proj, idx) => {
       const card = createCardElement(proj, idx + 4);
       track.appendChild(card);
+    });
+
+    if (window.autoGenerateCardArt) window.autoGenerateCardArt();
+  };
+
+  const renderCustomProjects = () => {
+    if (!manageProjectsContainer) return;
+    const saved = JSON.parse(localStorage.getItem('custom_projects') || '[]');
+    manageProjectsContainer.innerHTML = '';
+    if (!saved.length) {
+      manageProjectsContainer.innerHTML = '<span style="color: var(--ink-mute); font-size: 12px;">No custom projects added yet.</span>';
+      return;
+    }
+    saved.forEach((p, idx) => {
+      const item = document.createElement('div');
+      item.style.cssText = 'display: flex; justify-content: space-between; align-items: center; background: var(--bg); padding: 10px 14px; border-radius: 6px; border: 1px solid var(--line); font-size: 12px;';
+      item.innerHTML = `
+        <div>
+          <b>${p.title}</b>
+          <div style="color: var(--ink-mute); font-size: 11px;">${p.tags.join(', ')}</div>
+        </div>
+        <button type="button" data-del-proj="${idx}" style="color: #ff4757; cursor: pointer; border: none; background: none; font-size: 13px; font-weight: bold;">Delete</button>
+      `;
+      manageProjectsContainer.appendChild(item);
+    });
+
+    manageProjectsContainer.querySelectorAll('[data-del-proj]').forEach(b => {
+      b.addEventListener('click', () => {
+        const i = Number(b.dataset.delProj);
+        const current = JSON.parse(localStorage.getItem('custom_projects') || '[]');
+        current.splice(i, 1);
+        localStorage.setItem('custom_projects', JSON.stringify(current));
+        renderCustomProjects();
+        loadCustomProjects();
+      });
     });
   };
 
@@ -985,18 +1600,10 @@ const CASE_ORDER = ['portfolio', 'birthday', 'github'];
       existing.push(newProj);
       localStorage.setItem('custom_projects', JSON.stringify(existing));
 
-      if (track) {
-        const card = createCardElement(newProj, existing.length + 3);
-        track.appendChild(card);
-      }
-
+      loadCustomProjects();
+      renderCustomProjects();
       form.reset();
-      modal.style.display = 'none';
-
-      if (trigger) trigger.style.display = 'none';
-      window.history.replaceState({}, document.title, window.location.pathname);
-
-      alert('Project save ho gaya! Add karne ka button ab hat chuka hai.');
+      alert('Project saved successfully!');
     });
   }
 
@@ -1061,12 +1668,12 @@ const CASE_ORDER = ['portfolio', 'birthday', 'github'];
 
   window.addEventListener('pointerdown', (e) => {
     if (!audioCtx) initAudio();
-    if (e.target.closest('a, button, [data-open-case], .edu-tab-btn')) {
+    if (e.target.closest('a, button, [data-open-case], .edu-tab-btn, .cmdk-item, .sandbox-tab, .sandbox-run-btn')) {
       playClick();
     }
   });
 
-  document.querySelectorAll('a, button, .work-card, .exp-card, .edu-card, .edu-tab-btn').forEach((el) => {
+  document.querySelectorAll('a, button, .work-card, .exp-card, .edu-card, .edu-tab-btn, .bento-card, .cmdk-item, .sandbox-tab, .sandbox-run-btn').forEach((el) => {
     el.addEventListener('pointerenter', () => {
       if (audioCtx) playHover();
     });
@@ -1167,7 +1774,78 @@ const CASE_ORDER = ['portfolio', 'birthday', 'github'];
     });
   }, { threshold: 0.35 });
 
-  document.querySelectorAll('section, .work-card').forEach((el) => {
+  document.querySelectorAll('section, .work-card, .bento-card').forEach((el) => {
     sectionSnapObserver.observe(el);
   });
 })();
+
+// ── Codrops Clip-Path Polygon Multi-Image Glitch Deck Engine (Single Active Engine) ──
+(() => {
+  const deck = document.querySelector('[data-glitch-deck]');
+  const layers = document.querySelectorAll('.glitch-layer-img');
+  const tagCounter = document.querySelector('[data-hud-photo-counter]');
+
+  if (!deck || !layers.length) return;
+
+  // Yahan aap apni images ka path customize kar sakte hain
+  const IMAGES = [
+    'images/profile1.jpg',
+    'images/profile2.jpg',
+    'images/profile3.jpg',
+    'images/profile4.png'
+  ];
+
+  let currentIndex = 0;
+  let isGlitching = false;
+
+  // Initial load par sabhi 5 layers par pehli photo lagana
+  layers.forEach((layer) => {
+    layer.style.backgroundImage = `url('${IMAGES[0]}')`;
+  });
+
+  // Preload all assets
+  IMAGES.forEach((src) => {
+    const img = new Image();
+    img.src = src;
+  });
+
+  const triggerClipGlitch = (nextIdx = null) => {
+    if (isGlitching || IMAGES.length <= 1) return;
+    isGlitching = true;
+
+    const targetIdx = nextIdx !== null ? nextIdx : (currentIndex + 1) % IMAGES.length;
+    const nextSrc = IMAGES[targetIdx];
+
+    // Layers 2, 3, 4, 5 par incoming photo set hogi polygon slicing animation ke liye
+    for (let i = 1; i < layers.length; i++) {
+      layers[i].style.backgroundImage = `url('${nextSrc}')`;
+    }
+
+    deck.classList.add('is-glitching');
+
+    // Peak glitch displacement (160ms) par base layer change hogi
+    setTimeout(() => {
+      layers[0].style.backgroundImage = `url('${nextSrc}')`;
+      currentIndex = targetIdx;
+      if (tagCounter) {
+        tagCounter.textContent = `FRAME [0${currentIndex + 1}/0${IMAGES.length}]`;
+      }
+    }, 160);
+
+    // Animation end hone par cleanup
+    setTimeout(() => {
+      deck.classList.remove('is-glitching');
+      isGlitching = false;
+    }, 360);
+  };
+
+  // Har 4.5 seconds mein automatic glitch transition
+  let autoTimer = setInterval(() => triggerClipGlitch(), 4500);
+
+  // Click karne par instant switch
+  deck.addEventListener('click', () => {
+    clearInterval(autoTimer);
+    triggerClipGlitch();
+    autoTimer = setInterval(() => triggerClipGlitch(), 4500);
+  });
+})();QQQQQQQQ

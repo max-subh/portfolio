@@ -11,7 +11,7 @@
   <meta name="color-scheme" content="dark light" />
 
   <!-- Logo Favicon -->
-  <link rel="icon" type="image/png" href="logo.png" />
+  <link rel="icon" type="image/png" href="images/logo.png" />
 
   <script>
     (function () {
@@ -20,7 +20,7 @@
         var t = s || (window.matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark');
         if (t === 'light') document.documentElement.dataset.theme = 'light';
         var m = document.querySelector('meta[name="theme-color"]');
-        if (m) m.setAttribute('content', t === 'light' ? '#f4f5ed' : '#0a0b09');
+        if (m) m.setAttribute('content', t === 'light' ? '#f5f6ee' : '#0a0b09');
       } catch (e) { }
     })();
   </script>
@@ -45,7 +45,7 @@
   <!-- Navigation Header -->
   <header class="nav">
     <a href="#hero" class="nav__brand">
-      <img src="logo.png" alt="Logo"
+      <img src="images/logo.png" alt="Logo"
         style="width: 24px; height: 24px; border-radius: 4px; display: inline-block; vertical-align: middle;" />
       <span>SUBHAM SHIT</span>
     </a>
@@ -58,6 +58,11 @@
       <a class="nav__link" href="#contact">Contact</a>
     </nav>
     <div class="nav__right">
+      <!-- Quick Cmd+K Palette Trigger Button -->
+      <button class="nav__cmdk-btn" data-cmdk-trigger type="button" aria-label="Open command palette" title="Command Palette (Ctrl + K)">
+        <span class="cmdk-key">⌘K</span>
+      </button>
+
       <!-- Sound Toggle Button -->
       <button class="nav__sound" data-sound-toggle type="button" aria-label="Toggle sound effects" title="Toggle sound">
         <svg class="sound-icon-on" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor"
@@ -74,7 +79,7 @@
         </svg>
       </button>
 
-      <!-- data-theme-toggle Button -->
+      <!-- Theme Toggle Button -->
       <button class="nav__theme" data-theme-toggle type="button" aria-label="Toggle theme" aria-pressed="false"
         title="Toggle theme">
         <svg class="nav__theme-icon nav__theme-icon--sun" width="14" height="14" viewBox="0 0 16 16" fill="none"
@@ -95,7 +100,7 @@
   </header>
 
   <main>
-   <!-- Hero Section -->
+    <!-- Hero Section -->
     <section class="hero" id="hero" data-hero-interactive>
       <canvas class="hero__canvas" data-hero-canvas aria-hidden="true"></canvas>
 
@@ -112,7 +117,6 @@
 
       <!-- 2-Column Container: Left Text & Right Photo -->
       <div class="hero__layout">
-        <!-- Left Side: Content -->
         <div class="hero__content">
           <h1 class="hero__title">
             <span class="interactive-word">Hi,</span>
@@ -154,21 +158,53 @@
           </div>
         </div>
 
-        <!-- Right Side: Profile Image (Red Marked Area) -->
+        <!-- Right Side: Profile Image with Codrops 5-Layer Clip-Path Glitch Deck -->
         <div class="hero__media" data-fade-in data-delay="0.4s">
-          <div class="hero__photo-wrapper">
-            <!-- Apni image ka file path yaha lagayein -->
-            <img src="profile.jpg" alt="Subham Shit" class="hero__photo" />
+          <div class="hero__photo-wrapper cyber-hud-frame">
+            <!-- HUD Corner Crosshairs -->
+            <span class="hud-corner hud-corner--tl" aria-hidden="true"></span>
+            <span class="hud-corner hud-corner--tr" aria-hidden="true"></span>
+            <span class="hud-corner hud-corner--bl" aria-hidden="true"></span>
+            <span class="hud-corner hud-corner--br" aria-hidden="true"></span>
+
+            <!-- Codrops Style 5-Layer Glitch Container -->
+            <div class="glitch-deck" data-glitch-deck>
+              <div class="glitch-layer-img" style="background-image: url('profile.jpg');"></div>
+              <div class="glitch-layer-img" style="background-image: url('profile.jpg');"></div>
+              <div class="glitch-layer-img" style="background-image: url('profile.jpg');"></div>
+              <div class="glitch-layer-img" style="background-image: url('profile.jpg');"></div>
+              <div class="glitch-layer-img" style="background-image: url('profile.jpg');"></div>
+            </div>
+
             <div class="hero__photo-glow" aria-hidden="true"></div>
+
+            <!-- HUD Bottom Telemetry Tag -->
+            <div class="hud-tag">
+              <span class="hud-tag__dot"></span>
+              <span data-hud-photo-counter>FRAME [01/04]</span>
+            </div>
           </div>
         </div>
       </div>
     </section>
 
-    <!-- Marquee Ticker -->
+    <!-- Marquee Ticker (Infinite Seamless Chain Reaction Loop) -->
     <div class="marquee" data-marquee aria-hidden="true">
       <div class="marquee__track" data-marquee-track>
+        <!-- Group 1 -->
         <div class="marquee__group">
+          <span>BCA Student</span>
+          <span><em>C / C++</em></span>
+          <span>Java</span>
+          <span>Python</span>
+          <span>Data Structures</span>
+          <span>Medinipur</span>
+          <span>West Bengal</span>
+          <span><em>Learning by building</em></span>
+          <span>Problem Solving</span>
+        </div>
+        <!-- Group 2 (Duplicate for Seamless Chain Loop) -->
+        <div class="marquee__group" aria-hidden="true">
           <span>BCA Student</span>
           <span><em>C / C++</em></span>
           <span>Java</span>
@@ -191,7 +227,7 @@
       <div class="about">
         <div class="about__copy reveal" data-reveal>
           <p>
-            I'm a Bachelor of Computer Applications (BCA) student based in <em>Medinipur, West Bengal</em>[cite: 17].
+            I'm a Bachelor of Computer Applications (BCA) student based in <em>Medinipur, West Bengal</em>.
             I'm building my computer science foundation and exploring the software engineering principles behind
             reliable systems.
           </p>
@@ -207,7 +243,7 @@
           </div>
           <div class="about__fact">
             <span>Currently</span>
-            <div><b>UG</b> <em>· Midnapore City College</em>[cite: 17]</div>
+            <div><b>UG</b> <em>· Midnapore City College</em></div>
           </div>
           <div class="about__fact">
             <span>Languages</span>
@@ -223,9 +259,78 @@
           </div>
         </div>
       </div>
+
+      <!-- Bento Grid Quick-Stats Showcase -->
+      <div class="bento-grid reveal" data-reveal style="--d: 0.2s">
+        <!-- Bento 1: DSA Progress Card -->
+        <div class="bento-card bento-card--dsa">
+          <div class="bento-card__head">
+            <span class="bento-card__badge">PROBLEM SOLVING</span>
+            <span class="bento-card__icon">⚡</span>
+          </div>
+          <div class="bento-card__body">
+            <h3 class="bento-card__num" id="bento-dsa-count">120+</h3>
+            <p class="bento-card__title">Algorithmic Problems Solved</p>
+            <div class="bento-progress-bar">
+              <div class="bento-progress-fill" style="width: 72%;"></div>
+            </div>
+            <span class="bento-card__sub">Active daily discipline in C++ & Java</span>
+          </div>
+        </div>
+
+        <!-- Bento 2: Interactive Stack Matrix -->
+        <div class="bento-card bento-card--stack">
+          <div class="bento-card__head">
+            <span class="bento-card__badge">TOOLCHAIN MATRIX</span>
+            <span class="bento-card__icon">⚙</span>
+          </div>
+          <div class="bento-stack-pills">
+            <span class="bento-pill">C / C++</span>
+            <span class="bento-pill">Java</span>
+            <span class="bento-pill">Python</span>
+            <span class="bento-pill">JavaScript</span>
+            <span class="bento-pill">Git / CLI</span>
+            <span class="bento-pill">Supabase</span>
+            <span class="bento-pill">Vite</span>
+            <span class="bento-pill">HTML/CSS</span>
+          </div>
+          <p class="bento-card__footer-note">Hand-crafted architecture & clean logic</p>
+        </div>
+
+        <!-- Bento 3: Currently Vibing Music Widget (Clickable Direct YouTube Music Playlist) -->
+        <a class="bento-card bento-card--music" href="https://music.youtube.com/playlist?list=PLYDwUzuPKPAg&si=cfuSN-JvCaZTJALC" target="_blank" rel="noopener noreferrer">
+          <div class="bento-card__head">
+            <span class="bento-card__badge">CODING PLAYLIST ↗</span>
+            <div class="bento-equalizer" aria-hidden="true">
+              <span></span><span></span><span></span><span></span>
+            </div>
+          </div>
+          <div class="bento-music-content">
+            <div class="bento-music-cover">♫</div>
+            <div class="bento-music-details">
+              <b class="bento-track-name">Favorite Coding Mix</b>
+              <span class="bento-artist">Open YouTube Music ↗</span>
+            </div>
+          </div>
+          <span class="bento-card__sub">Click to listen · High energy soundtrack for builds</span>
+        </a>
+
+        <!-- Bento 4: Medinipur Coordinate Radar -->
+        <div class="bento-card bento-card--location">
+          <div class="bento-card__head">
+            <span class="bento-card__badge">LOCATION PIN</span>
+            <span class="bento-radar-ping" aria-hidden="true"></span>
+          </div>
+          <div class="bento-location-content">
+            <h4>Medinipur, WB</h4>
+            <p class="bento-coords">22.4257° N, 87.3199° E</p>
+            <span class="bento-status-pill">Available for Remote / Hybrid Work</span>
+          </div>
+        </div>
+      </div>
     </section>
 
-    <!-- 02 Selected Work (Horizontal Spring Scroll Rail) -->
+    <!-- 02 Selected Work -->
     <section class="work-rail" id="work" data-work-rail>
       <div class="work-rail__sticky">
         <div class="work-rail__track" data-work-track>
@@ -236,22 +341,22 @@
             <div class="work-rail__hint">Scroll to advance</div>
           </div>
 
-          <!-- Card 1: Live Portfolio -->
+          <!-- Card 1 -->
           <article class="work-card">
             <button class="work-card__hit" data-open-case="portfolio" aria-label="Open Personal Portfolio case study">
               <div class="work-card__head">
                 <span>2026</span>
                 <span class="work-card__num">01</span>
               </div>
-              <div class="work-card__art" data-mesh-art></div>
+              <div class="work-card__art"></div>
               <div class="work-card__body">
                 <h3 class="work-card__title">Subham <em>Portfolio</em></h3>
                 <p class="work-card__blurb">
                   A personal creative portfolio deployed on Vercel featuring physics-based tilt, canvas flow-field,
-                  custom cursor, and smooth transitions built using vanilla technologies[cite: 17].
+                  custom cursor, and smooth transitions built using vanilla technologies.
                 </p>
                 <div class="work-card__tags">
-                  <span>HTML5</span><span>CSS3</span><span>JavaScript</span><span>Vercel</span>[cite: 17]
+                  <span>HTML5</span><span>CSS3</span><span>JavaScript</span><span>Vercel</span>
                 </div>
               </div>
             </button>
@@ -264,23 +369,23 @@
                 </svg>
               </span>
               <a class="work-card__action" href="https://subh-4uq2.vercel.app/" target="_blank" rel="noreferrer">
-                Visit Live[cite: 17]
+                Visit Live
                 <svg width="11" height="11" viewBox="0 0 12 12" fill="none" aria-hidden="true">
-                  <path d="M1 11L11 1M11 1H4M11 1V8" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"
+                  <path d="M1 11L11 1H4M11 1V8" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"
                     stroke-linejoin="round" />
                 </svg>
               </a>
             </div>
           </article>
 
-          <!-- Card 2: Birthday Project -->
+          <!-- Card 2 -->
           <article class="work-card">
             <button class="work-card__hit" data-open-case="birthday" aria-label="Open Birthday Page case study">
               <div class="work-card__head">
                 <span>2026</span>
                 <span class="work-card__num">02</span>
               </div>
-              <div class="work-card__art" data-grid-art></div>
+              <div class="work-card__art"></div>
               <div class="work-card__body">
                 <h3 class="work-card__title">Celebration <em>Experience</em></h3>
                 <p class="work-card__blurb">
@@ -311,7 +416,7 @@
             </div>
           </article>
 
-          <!-- Card 3: GitHub Repositories (Realtime GitHub Telemetry) -->
+          <!-- Card 3 -->
           <article class="work-card">
             <button class="work-card__hit" data-open-case="github" aria-label="Open GitHub Projects case study">
               <div class="work-card__head">
@@ -405,14 +510,14 @@
             <span class="edu-card__year">2026</span>
           </div>
           <h3 class="edu-card__title">AI Strategy & Business Intelligence</h3>
-          <div class="edu-card__inst">IBM SkillsBuild <em></em></div>
+          <div class="edu-card__inst">IBM SkillsBuild</div>
           <p class="edu-card__desc">
             Completed a comprehensive internship program focused on AI strategy, business intelligence, and practical
             applications of AI in real-world scenarios.
           </p>
           <div class="edu-card__meta">
-            <span>JAC Board</span>
-            <span>Jharkhand</span>
+            <span>IBM SkillsBuild</span>
+            <span>Remote</span>
           </div>
         </div>
 
@@ -440,7 +545,7 @@
               <span class="edu-card__year">2022 — 2024</span>
             </div>
             <h3 class="edu-card__title">Higher Secondary Education (10+2)</h3>
-            <div class="edu-card__inst">st. paul's College <em>· Ranchi, Jharkhand</em></div>
+            <div class="edu-card__inst">St. Paul's College <em>· Ranchi, Jharkhand</em></div>
             <p class="edu-card__desc">
               Completed senior secondary education focusing on Science & Mathematics, establishing the logic and
               problem-solving basis for programming.
@@ -457,7 +562,7 @@
               <span class="edu-card__year">2022</span>
             </div>
             <h3 class="edu-card__title">Secondary School Examination (10th)</h3>
-            <div class="edu-card__inst">saraswati Vidya Mandir <em>· Ghatsila, Jharkhand</em></div>
+            <div class="edu-card__inst">Saraswati Vidya Mandir <em>· Ghatsila, Jharkhand</em></div>
             <p class="edu-card__desc">
               Foundational secondary education with early exposure to computing and mathematics.
             </p>
@@ -530,7 +635,7 @@
               <span class="edu-card__year">2026</span>
             </div>
             <h3 class="edu-card__title">High-Performance Portfolio</h3>
-            <div class="edu-card__inst">Vanilla Stack · Vercel Deploy[cite: 17]</div>
+            <div class="edu-card__inst">Vanilla Stack · Vercel Deploy</div>
             <p class="edu-card__desc">
               Engineered spring-driven cursor, custom sound synthesis via Web Audio API, and real-time GitHub telemetry.
             </p>
@@ -545,7 +650,7 @@
               <span class="edu-card__year">Active</span>
             </div>
             <h3 class="edu-card__title">Public Algorithm Repositories</h3>
-            <div class="edu-card__inst">GitHub / max-subh[cite: 17]</div>
+            <div class="edu-card__inst">GitHub / max-subh</div>
             <p class="edu-card__desc">
               Publicly documenting daily data structures solutions, modular Java design patterns, and Python automation
               tools.
@@ -561,10 +666,10 @@
               <span class="edu-card__year">2026</span>
             </div>
             <h3 class="edu-card__title">Celebration Experience App</h3>
-            <div class="edu-card__inst">React & TypeScript[cite: 17]</div>
+            <div class="edu-card__inst">React & TypeScript</div>
             <p class="edu-card__desc">
               Delivered custom live countdown timers, personal photo transitions, and particle physics deployed on
-              Vercel[cite: 17].
+              Vercel.
             </p>
             <div class="edu-card__meta">
               <span>React</span><span>TypeScript</span>
@@ -574,7 +679,7 @@
       </div>
     </section>
 
-    <!-- 04 Practice / Tracks -->
+    <!-- 04 Practice / Tracks & Interactive Terminal -->
     <section class="section section--narrow" id="experiments">
       <div class="section__top reveal" data-reveal data-ghost="04">
         <span class="section__num" data-scramble>04 / Practice</span>
@@ -598,7 +703,7 @@
           <a class="exp-card__link" href="https://github.com/max-subh" target="_blank" rel="noreferrer">
             View repo
             <svg width="11" height="11" viewBox="0 0 12 12" fill="none" aria-hidden="true">
-              <path d="M1 11L11 1M11 1H4M11 1V8" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"
+              <path d="M1 11L11 1H4M11 1V8" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"
                 stroke-linejoin="round" />
             </svg>
           </a>
@@ -669,6 +774,51 @@
             </svg>
           </a>
         </article>
+      </div>
+
+      <!-- Interactive Code Sandbox Widget -->
+      <div class="code-sandbox reveal" data-reveal style="--d: 0.2s">
+        <div class="code-sandbox__header">
+          <div class="code-sandbox__tabs">
+            <button type="button" class="sandbox-tab active" data-lang="cpp">main.cpp</button>
+            <button type="button" class="sandbox-tab" data-lang="java">Solution.java</button>
+            <button type="button" class="sandbox-tab" data-lang="python">script.py</button>
+          </div>
+          <button type="button" class="sandbox-run-btn" data-sandbox-run>
+            <span class="run-icon">▶</span> RUN CODE
+          </button>
+        </div>
+        <div class="code-sandbox__editor">
+          <pre><code id="sandbox-code">// Fast I/O & Binary Search Template
+#include &lt;iostream&gt;
+#include &lt;vector&gt;
+using namespace std;
+
+int binarySearch(const vector&lt;int&gt;&amp; arr, int target) {
+    int left = 0, right = arr.size() - 1;
+    while (left &lt;= right) {
+        int mid = left + (right - left) / 2;
+        if (arr[mid] == target) return mid;
+        if (arr[mid] &lt; target) left = mid + 1;
+        else right = mid - 1;
+    }
+    return -1;
+}
+
+int main() {
+    vector&lt;int&gt; data = {2, 7, 11, 15, 24, 38, 56};
+    int found = binarySearch(data, 24);
+    cout &lt;&lt; "Target 24 indexed at: " &lt;&lt; found &lt;&lt; endl;
+    return 0;
+}</code></pre>
+        </div>
+        <div class="code-sandbox__terminal">
+          <div class="terminal-bar">
+            <span>● OUTPUT CONSOLE</span>
+            <span id="sandbox-status">IDLE</span>
+          </div>
+          <pre id="sandbox-output">Click "RUN CODE" to compile and execute simulation...</pre>
+        </div>
       </div>
     </section>
 
@@ -755,14 +905,12 @@
           <button class="contact__copy" data-copy-email>↗ Copy address</button>
         </div>
         <div class="contact__socials">
-          <a href="https://github.com/max-subh" target="_blank" rel="noreferrer">GitHub <span>max-subh
-              ↗</span></a>[cite: 17]
+          <a href="https://github.com/max-subh" target="_blank" rel="noreferrer">GitHub <span>max-subh ↗</span></a>
           <a href="https://www.linkedin.com/in/subham-shit-0a51963b3?utm_source=share_via&utm_content=profile&utm_medium=member_android"
-            target="_blank" rel="noreferrer">LinkedIn <span>subham-shit ↗</span></a>[cite: 17]
+            target="_blank" rel="noreferrer">LinkedIn <span>subham-shit ↗</span></a>
           <a href="https://www.instagram.com/son_of_sanjit_?rpxt=MTgxOXU3dHc0bzAyNg==" target="_blank"
-            rel="noreferrer">Instagram <span>son_of_sanjit_ ↗</span></a>[cite: 17]
-          <a href="https://x.com/son_of_sanjit" target="_blank" rel="noreferrer">X (Twitter) <span>@son_of_sanjit
-              ↗</span></a>[cite: 17]
+            rel="noreferrer">Instagram <span>son_of_sanjit_ ↗</span></a>
+          <a href="https://x.com/son_of_sanjit" target="_blank" rel="noreferrer">X (Twitter) <span>@son_of_sanjit ↗</span></a>
         </div>
       </div>
     </section>
@@ -770,7 +918,7 @@
 
   <footer class="foot">
     <div>© 2026 · SUBHAM SHIT</div>
-    <div>Designed &amp; developed by hand</div>
+    <div>Designed &amp; developed by SUBHAM</div>
   </footer>
 
   <!-- Case study modal mount container -->
@@ -792,63 +940,110 @@
     </div>
   </aside>
 
-  <script src="script.js" defer></script>
-
-  <!-- Hidden Admin Panel (Only visible with ?admin=subham24) -->
-  <div id="admin-trigger" style="display: none; position: fixed; bottom: 20px; left: 20px; z-index: 10000;">
-    <button id="admin-open-btn"
-      style="background: var(--accent); color: var(--ink-on-accent); padding: 12px 20px; border-radius: 999px; font-family: var(--font-mono); font-size: 11px; font-weight: bold; border: none; cursor: pointer; box-shadow: 0 0 20px var(--accent);">
-      + Add New Project
-    </button>
+  <!-- Live Cyber Telemetry HUD Pill -->
+  <div class="hud-telemetry" data-hud-telemetry aria-hidden="true">
+    <span class="hud-telemetry__dot"></span>
+    <span class="hud-telemetry__fps" data-telemetry-fps>60 FPS</span>
+    <span class="hud-telemetry__sep">·</span>
+    <span class="hud-telemetry__vel" data-telemetry-vel>0 PX/S</span>
   </div>
 
-  <!-- Admin Modal -->
-  <div id="admin-modal"
-    style="display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.8); z-index: 10001; place-items: center; padding: 20px; backdrop-filter: blur(8px);">
-    <div
-      style="background: var(--bg-elev); border: 1px solid var(--line-strong); padding: 28px; border-radius: 16px; width: min(100%, 500px); color: var(--ink); font-family: var(--font-sans);">
-      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
-        <h3 style="margin: 0; font-size: 18px; font-weight: 500;">Add New Project</h3>
-        <button id="admin-close-btn"
-          style="background: none; border: none; color: var(--ink-mute); font-size: 18px; cursor: pointer;">✕</button>
+  <!-- Interactive Cmd+K Command Palette Modal -->
+  <div class="cmdk-backdrop" id="cmdk-modal" style="display: none;" aria-hidden="true">
+    <div class="cmdk-dialog" role="dialog" aria-modal="true" aria-label="Developer Command Palette">
+      <div class="cmdk-input-wrap">
+        <svg class="cmdk-search-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <circle cx="11" cy="11" r="8"></circle>
+          <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+        </svg>
+        <input type="text" class="cmdk-input" id="cmdk-query" placeholder="Type a command or jump to section (e.g. work, theme, contact)..." autocomplete="off" />
+        <span class="cmdk-badge">ESC</span>
       </div>
-      <form id="admin-project-form" style="display: grid; gap: 14px;">
-        <div>
-          <label style="font-size: 11px; font-family: var(--font-mono); color: var(--ink-mute);">PROJECT TITLE</label>
-          <input type="text" id="proj-title" required placeholder="e.g. Algo Visualizer"
-            style="width: 100%; padding: 10px; background: var(--bg); border: 1px solid var(--line); border-radius: 6px; color: var(--ink); margin-top: 4px;" />
-        </div>
-        <div>
-          <label style="font-size: 11px; font-family: var(--font-mono); color: var(--ink-mute);">DESCRIPTION</label>
-          <textarea id="proj-desc" required rows="3" placeholder="Short description of your project..."
-            style="width: 100%; padding: 10px; background: var(--bg); border: 1px solid var(--line); border-radius: 6px; color: var(--ink); margin-top: 4px;"></textarea>
-        </div>
-        <div>
-          <label style="font-size: 11px; font-family: var(--font-mono); color: var(--ink-mute);">TAGS (Comma
-            separated)</label>
-          <input type="text" id="proj-tags" placeholder="e.g. React, Node.js, Web"
-            style="width: 100%; padding: 10px; background: var(--bg); border: 1px solid var(--line); border-radius: 6px; color: var(--ink); margin-top: 4px;" />
-        </div>
-        <div>
-          <label style="font-size: 11px; font-family: var(--font-mono); color: var(--ink-mute);">LIVE URL
-            (Optional)</label>
-          <input type="url" id="proj-live" placeholder="https://..."
-            style="width: 100%; padding: 10px; background: var(--bg); border: 1px solid var(--line); border-radius: 6px; color: var(--ink); margin-top: 4px;" />
-        </div>
-        <div>
-          <label style="font-size: 11px; font-family: var(--font-mono); color: var(--ink-mute);">GITHUB URL
-            (Optional)</label>
-          <input type="url" id="proj-github" placeholder="https://github.com/..."
-            style="width: 100%; padding: 10px; background: var(--bg); border: 1px solid var(--line); border-radius: 6px; color: var(--ink); margin-top: 4px;" />
-        </div>
-        <button type="submit"
-          style="background: var(--accent); color: var(--ink-on-accent); border: none; padding: 12px; border-radius: 8px; font-family: var(--font-mono); font-size: 12px; font-weight: bold; cursor: pointer; margin-top: 10px;">
-          Add to Website
-        </button>
-      </form>
+      <div class="cmdk-results" id="cmdk-list"></div>
+      <div class="cmdk-foot">
+        <span><b>↑↓</b> Navigate</span>
+        <span><b>↵</b> Select</span>
+        <span><b>ESC</b> Close</span>
+      </div>
     </div>
   </div>
 
+  <!-- Hidden Admin Panel (Visible with ?admin=subham24) -->
+  <div id="admin-trigger" style="display: none; position: fixed; bottom: 20px; left: 20px; z-index: 10000;">
+    <button id="admin-open-btn" style="background: var(--accent); color: var(--ink-on-accent); padding: 12px 22px; border-radius: 999px; font-family: var(--font-mono); font-size: 11px; font-weight: bold; border: none; cursor: pointer; box-shadow: 0 0 24px var(--accent);">
+      ⚙ Admin Console
+    </button>
+  </div>
+
+  <!-- Full Control Admin Modal -->
+  <div id="admin-modal" style="display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.85); z-index: 10001; place-items: center; padding: 20px; backdrop-filter: blur(10px);">
+    <div style="background: var(--bg-elev); border: 1px solid var(--line-strong); padding: 28px; border-radius: 16px; width: min(100%, 540px); color: var(--ink); font-family: var(--font-sans); max-height: 90vh; overflow-y: auto;">
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+        <h3 style="margin: 0; font-size: 18px; font-weight: 600;">Control Console</h3>
+        <button id="admin-close-btn" style="background: none; border: none; color: var(--ink-mute); font-size: 20px; cursor: pointer;">✕</button>
+      </div>
+
+      <!-- Admin Tab Switcher -->
+      <div style="display: flex; gap: 8px; margin-bottom: 20px; border-bottom: 1px solid var(--line); padding-bottom: 12px; flex-wrap: wrap;">
+        <button type="button" class="admin-tab-btn" data-adm-target="#adm-roles" style="background: var(--accent); color: var(--ink-on-accent); border: none; padding: 6px 14px; border-radius: 999px; font-size: 11px; font-family: var(--font-mono); cursor: pointer; font-weight: bold;">Typewriter Roles</button>
+        <button type="button" class="admin-tab-btn" data-adm-target="#adm-status" style="background: transparent; color: var(--ink-mute); border: 1px solid var(--line); padding: 6px 14px; border-radius: 999px; font-size: 11px; font-family: var(--font-mono); cursor: pointer;">Meta Status</button>
+        <button type="button" class="admin-tab-btn" data-adm-target="#adm-new-proj" style="background: transparent; color: var(--ink-mute); border: 1px solid var(--line); padding: 6px 14px; border-radius: 999px; font-size: 11px; font-family: var(--font-mono); cursor: pointer;">Add Project</button>
+        <button type="button" class="admin-tab-btn" data-adm-target="#adm-manage-proj" style="background: transparent; color: var(--ink-mute); border: 1px solid var(--line); padding: 6px 14px; border-radius: 999px; font-size: 11px; font-family: var(--font-mono); cursor: pointer;">Manage Projects</button>
+      </div>
+
+      <!-- Tab 1: Typewriter Roles -->
+      <div id="adm-roles" class="admin-pane" style="display: block;">
+        <label style="font-size: 11px; font-family: var(--font-mono); color: var(--ink-mute); display: block; margin-bottom: 8px;">CURRENT ROLES (Auto-Typing)</label>
+        <div id="adm-roles-list" style="display: flex; flex-direction: column; gap: 8px; margin-bottom: 16px;"></div>
+        <div style="display: flex; gap: 8px;">
+          <input type="text" id="adm-new-role-input" placeholder="e.g. REACT DEVELOPER" style="flex: 1; padding: 10px; background: var(--bg); border: 1px solid var(--line); border-radius: 6px; color: var(--ink); font-family: var(--font-mono); font-size: 12px; text-transform: uppercase;" />
+          <button type="button" id="adm-add-role-btn" style="background: var(--accent); color: var(--ink-on-accent); border: none; padding: 10px 18px; border-radius: 6px; font-family: var(--font-mono); font-size: 11px; font-weight: bold; cursor: pointer;">Add</button>
+        </div>
+      </div>
+
+      <!-- Tab 2: Meta Status -->
+      <div id="adm-status" class="admin-pane" style="display: none;">
+        <label style="font-size: 11px; font-family: var(--font-mono); color: var(--ink-mute); display: block; margin-bottom: 8px;">HERO META STATUS LINE</label>
+        <input type="text" id="adm-status-input" placeholder="e.g. learning · building · growing" style="width: 100%; padding: 10px; background: var(--bg); border: 1px solid var(--line); border-radius: 6px; color: var(--ink); font-family: var(--font-mono); font-size: 12px; margin-bottom: 14px;" />
+        <button type="button" id="adm-save-status-btn" style="background: var(--accent); color: var(--ink-on-accent); border: none; padding: 10px 18px; border-radius: 6px; font-family: var(--font-mono); font-size: 11px; font-weight: bold; cursor: pointer;">Save Status</button>
+      </div>
+
+      <!-- Tab 3: Add Project -->
+      <div id="adm-new-proj" class="admin-pane" style="display: none;">
+        <form id="admin-project-form" style="display: grid; gap: 12px;">
+          <div>
+            <label style="font-size: 11px; font-family: var(--font-mono); color: var(--ink-mute);">PROJECT TITLE</label>
+            <input type="text" id="proj-title" required placeholder="e.g. Algo Visualizer" style="width: 100%; padding: 10px; background: var(--bg); border: 1px solid var(--line); border-radius: 6px; color: var(--ink); margin-top: 4px;" />
+          </div>
+          <div>
+            <label style="font-size: 11px; font-family: var(--font-mono); color: var(--ink-mute);">DESCRIPTION</label>
+            <textarea id="proj-desc" required rows="2" placeholder="Short description..." style="width: 100%; padding: 10px; background: var(--bg); border: 1px solid var(--line); border-radius: 6px; color: var(--ink); margin-top: 4px;"></textarea>
+          </div>
+          <div>
+            <label style="font-size: 11px; font-family: var(--font-mono); color: var(--ink-mute);">TAGS (Comma separated)</label>
+            <input type="text" id="proj-tags" placeholder="React, Node.js, Web" style="width: 100%; padding: 10px; background: var(--bg); border: 1px solid var(--line); border-radius: 6px; color: var(--ink); margin-top: 4px;" />
+          </div>
+          <div>
+            <label style="font-size: 11px; font-family: var(--font-mono); color: var(--ink-mute);">LIVE URL (Optional)</label>
+            <input type="url" id="proj-live" placeholder="https://..." style="width: 100%; padding: 10px; background: var(--bg); border: 1px solid var(--line); border-radius: 6px; color: var(--ink); margin-top: 4px;" />
+          </div>
+          <div>
+            <label style="font-size: 11px; font-family: var(--font-mono); color: var(--ink-mute);">GITHUB URL (Optional)</label>
+            <input type="url" id="proj-github" placeholder="https://github.com/..." style="width: 100%; padding: 10px; background: var(--bg); border: 1px solid var(--line); border-radius: 6px; color: var(--ink); margin-top: 4px;" />
+          </div>
+          <button type="submit" style="background: var(--accent); color: var(--ink-on-accent); border: none; padding: 12px; border-radius: 8px; font-family: var(--font-mono); font-size: 12px; font-weight: bold; cursor: pointer; margin-top: 6px;">Add to Website</button>
+        </form>
+      </div>
+
+      <!-- Tab 4: Manage Projects -->
+      <div id="adm-manage-proj" class="admin-pane" style="display: none;">
+        <label style="font-size: 11px; font-family: var(--font-mono); color: var(--ink-mute); display: block; margin-bottom: 8px;">CUSTOM PROJECTS SAVED</label>
+        <div id="adm-custom-proj-list" style="display: flex; flex-direction: column; gap: 10px;"></div>
+      </div>
+    </div>
+  </div>
+
+  <script src="script.js" defer></script>
 </body>
 
 </html>
