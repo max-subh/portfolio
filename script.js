@@ -1,6 +1,6 @@
 const reducedMotion = () => window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-// ── Semi-implicit Euler Spring Physics Primitive ──────────────────────────
+// Spring physics
 const spring = (initial = 0, opts = {}) => {
   const stiffness = opts.stiffness ?? 180;
   const damping = opts.damping ?? 20;
@@ -26,7 +26,7 @@ const spring = (initial = 0, opts = {}) => {
   };
 };
 
-// ── Theme Switcher with Circular Reveal ───────────────────────────────────
+// Theme
 (() => {
   const KEY = 'theme';
   const root = document.documentElement;
@@ -82,7 +82,7 @@ const spring = (initial = 0, opts = {}) => {
   else if (mq.addListener) mq.addListener(onMqChange);
 })();
 
-// ── Realtime IST Clock ────────────────────────────────────────────────────
+// IST clock
 (() => {
   const els = document.querySelectorAll('[data-ist-clock]');
   if (!els.length) return;
@@ -107,7 +107,7 @@ const spring = (initial = 0, opts = {}) => {
   setInterval(tick, 30000);
 })();
 
-// ── Hero Subtitle Typewriter Engine (Dynamic LocalStorage Powered) ─────────
+// Hero role rotation
 let globalTypewriterTick = null;
 (() => {
   const target = document.querySelector('[data-typed-hero]');
@@ -168,7 +168,7 @@ let globalTypewriterTick = null;
   };
 })();
 
-// ── Hero Meta & CTA Fade In ───────────────────────────────────────────────
+// Hero entrance
 (() => {
   const reduced = reducedMotion();
   document.querySelectorAll('[data-fade-in]').forEach((el) => {
@@ -188,7 +188,7 @@ let globalTypewriterTick = null;
   });
 })();
 
-// ── Magnetic Buttons ──────────────────────────────────────────────────────
+// Magnetic buttons
 (() => {
   if (window.matchMedia('(pointer: coarse)').matches || reducedMotion()) return;
   const targets = [...document.querySelectorAll('[data-magnetic]')].map((el) => ({
@@ -217,7 +217,7 @@ let globalTypewriterTick = null;
   document.addEventListener('mouseleave', reset);
 })();
 
-// ── Reveal on Scroll ──────────────────────────────────────────────────────
+// Scroll reveals
 (() => {
   const els = document.querySelectorAll('[data-reveal]');
   const io = new IntersectionObserver((entries) => {
@@ -231,7 +231,7 @@ let globalTypewriterTick = null;
   els.forEach((el) => io.observe(el));
 })();
 
-// ── Scramble Decoders ─────────────────────────────────────────────────────
+// Text scramble
 (() => {
   const els = document.querySelectorAll('[data-scramble]');
   if (!els.length || reducedMotion()) return;
@@ -266,7 +266,7 @@ let globalTypewriterTick = null;
   els.forEach((el) => io.observe(el));
 })();
 
-// ── Horizontal Work Rail Scroll ───────────────────────────────────────────
+// Project rail
 (() => {
   const rail = document.querySelector('[data-work-rail]');
   const track = document.querySelector('[data-work-track]');
@@ -308,7 +308,7 @@ let globalTypewriterTick = null;
   apply();
 })();
 
-// ── Flow Field Generative Hero Canvas ─────────────────────────────────────
+// Hero background canvas
 (() => {
   const canvas = document.querySelector('[data-hero-canvas]');
   const hero = document.querySelector('.hero');
@@ -439,7 +439,7 @@ let globalTypewriterTick = null;
   }).observe(document.documentElement, { attributes: true, attributeFilter: ['data-theme'] });
 })();
 
-// ── Procedural Dynamic Cyber Art Generator (URL/Title Seeded) ──────────────
+// Project artwork
 (() => {
   const NS = 'http://www.w3.org/2000/svg';
   const svg = (tag, attrs) => {
@@ -457,7 +457,7 @@ let globalTypewriterTick = null;
     return Math.abs(hash);
   };
 
-  // Pattern 1: Concentric Orbital Gyro Rings
+  // Orbital rings
   const renderGyroArt = (container, seed) => {
     const s = svg('svg', { width: '200', height: '160', viewBox: '0 0 200 160', 'aria-hidden': 'true' });
     const rings = 4 + (seed % 3);
@@ -483,7 +483,7 @@ let globalTypewriterTick = null;
     container.appendChild(s);
   };
 
-  // Pattern 2: Cyber Matrix Heatmap Grid
+  // Grid pattern
   const renderGridMatrixArt = (container, seed) => {
     const s = svg('svg', { width: '200', height: '160', viewBox: '0 0 200 160', 'aria-hidden': 'true' });
     const cols = 8;
@@ -520,7 +520,7 @@ let globalTypewriterTick = null;
     container.appendChild(s);
   };
 
-  // Pattern 3: Cyber Wave Spectrum
+  // Wave pattern
   const renderWaveArt = (container, seed) => {
     const s = svg('svg', { width: '200', height: '160', viewBox: '0 0 200 160', 'aria-hidden': 'true' });
     const bars = 18;
@@ -540,7 +540,7 @@ let globalTypewriterTick = null;
     container.appendChild(s);
   };
 
-  // Pattern 4: Constellation Node Network
+  // Node network
   const renderNetworkArt = (container, seed) => {
     const s = svg('svg', { width: '200', height: '160', viewBox: '0 0 200 160', 'aria-hidden': 'true' });
     const pts = [];
@@ -595,7 +595,7 @@ let globalTypewriterTick = null;
 
   window.autoGenerateCardArt();
 
-  // Roadmap Blueprint Art
+  // Roadmap artwork
   const ga = document.querySelector('[data-graph-art]');
   if (ga) {
     const nodes = [
@@ -643,7 +643,7 @@ let globalTypewriterTick = null;
   }
 })();
 
-// ── Interactive Education / Skills / Milestones Tab Controller ────────────
+// Education tabs
 (() => {
   const tabButtons = document.querySelectorAll('.edu-tab-btn');
   const tabPanes = document.querySelectorAll('.edu-tab-pane');
@@ -668,7 +668,7 @@ let globalTypewriterTick = null;
   });
 })();
 
-// ── Bento Grid Animated DSA Counter ───────────────────────────────────────
+// Problem-solving count
 (() => {
   const countEl = document.getElementById('bento-dsa-count');
   if (!countEl) return;
@@ -699,7 +699,7 @@ let globalTypewriterTick = null;
   observer.observe(countEl);
 })();
 
-// ── Interactive Code Sandbox Runner ───────────────────────────────────────
+// Code sandbox
 (() => {
   const tabs = document.querySelectorAll('.sandbox-tab');
   const codeEl = document.getElementById('sandbox-code');
@@ -814,7 +814,7 @@ Traceback free · Memory allocated: 840KB`
   });
 })();
 
-// ── Live Cyber Telemetry HUD Pill (FPS & Velocity Tracker) ────────────────
+// Performance indicator
 (() => {
   const fpsEl = document.querySelector('[data-telemetry-fps]');
   const velEl = document.querySelector('[data-telemetry-vel]');
@@ -853,7 +853,7 @@ Traceback free · Memory allocated: 840KB`
   requestAnimationFrame(updateTelemetry);
 })();
 
-// ── Cmd + K Developer Command Palette (Spotlight Terminal) ────────────────
+// Command palette
 (() => {
   const backdrop = document.getElementById('cmdk-modal');
   const input = document.getElementById('cmdk-query');
@@ -1004,7 +1004,7 @@ Traceback free · Memory allocated: 840KB`
   };
 })();
 
-// ── Case Study Data ────────────────────────────────────────────────────────
+// Project details
 const CASES = {
   portfolio: {
     tag: 'Personal Website · 2026',
@@ -1069,7 +1069,7 @@ const CASES = {
 };
 const CASE_ORDER = ['portfolio', 'birthday', 'github'];
 
-// ── Case Study Modal System ───────────────────────────────────────────────
+// Project detail modal
 (() => {
   const mount = document.querySelector('[data-case-mount]');
   if (!mount) return;
@@ -1174,7 +1174,7 @@ const CASE_ORDER = ['portfolio', 'birthday', 'github'];
   });
 })();
 
-// ── Copy Email ────────────────────────────────────────────────────────────
+// Copy email
 (() => {
   const btn = document.querySelector('[data-copy-email]');
   if (!btn) return;
@@ -1192,7 +1192,7 @@ const CASE_ORDER = ['portfolio', 'birthday', 'github'];
   });
 })();
 
-// ── Scrub Rail Progress Tracker ───────────────────────────────────────────
+// Scroll progress
 (() => {
   const root = document.querySelector('[data-scrub]');
   if (!root) return;
@@ -1235,7 +1235,7 @@ const CASE_ORDER = ['portfolio', 'birthday', 'github'];
   }
 })();
 
-// ── Velocity-Stretching Ring Cursor ───────────────────────────────────────
+// Custom cursor
 (() => {
   if (window.matchMedia('(pointer: coarse)').matches || reducedMotion()) return;
   const dot = document.querySelector('[data-cursor-dot]');
@@ -1328,7 +1328,7 @@ const CASE_ORDER = ['portfolio', 'birthday', 'github'];
   requestAnimationFrame(tick);
 })();
 
-// ── Physics Layer: 3D Spring Tilt & Parallax ──────────────────────────────
+// Card tilt
 (() => {
   if (window.matchMedia('(pointer: coarse)').matches || reducedMotion()) return;
 
@@ -1377,7 +1377,7 @@ const CASE_ORDER = ['portfolio', 'birthday', 'github'];
   });
 })();
 
-// ── Card Cursor Spotlight ─────────────────────────────────────────────────
+// Card spotlight
 (() => {
   if (window.matchMedia('(pointer: coarse)').matches) return;
   document.querySelectorAll('.work-card, .exp-card, .edu-card, .ai-feature, .bento-card').forEach((card) => {
@@ -1389,7 +1389,7 @@ const CASE_ORDER = ['portfolio', 'birthday', 'github'];
   });
 })();
 
-// ── Admin Console Controller (Projects, Typewriter & Meta Status) ──────────
+// Admin controls
 (() => {
   const SECRET_KEY = 'subham24';
   const urlParams = new URLSearchParams(window.location.search);
@@ -1610,7 +1610,7 @@ const CASE_ORDER = ['portfolio', 'birthday', 'github'];
   loadCustomProjects();
 })();
 
-// ── Feature 5: Web Audio API Procedural UI Sound Engine ───────────────────
+// UI sounds
 (() => {
   let audioCtx = null;
   let soundEnabled = localStorage.getItem('sound_enabled') === 'true';
@@ -1682,7 +1682,7 @@ const CASE_ORDER = ['portfolio', 'birthday', 'github'];
   document.querySelector('[data-theme-toggle]')?.addEventListener('click', playTheme);
 })();
 
-// ── Feature 2: Realtime GitHub Telemetry API Fetcher ───────────────────────
+// GitHub stats
 (() => {
   const USERNAME = 'max-subh';
   const repoCountEl = document.getElementById('gh-repos');
@@ -1724,7 +1724,7 @@ const CASE_ORDER = ['portfolio', 'birthday', 'github'];
   fetchGitHubStats();
 })();
 
-// ── Smooth Velocity-Based Haptic Scroll Ticks ──────────────────────────────
+// Scroll haptics
 (() => {
   if (!('vibrate' in navigator)) return;
 
@@ -1779,15 +1779,14 @@ const CASE_ORDER = ['portfolio', 'birthday', 'github'];
   });
 })();
 
-// ── Codrops Clip-Path Polygon Multi-Image Glitch Deck Engine (Single Active Engine) ──
+// Profile photo rotation
 (() => {
-  const deck = document.querySelector('[data-glitch-deck]');
-  const layers = document.querySelectorAll('.glitch-layer-img');
+  const deck = document.querySelector('[data-profile-photo-deck]');
+  const layers = deck?.querySelectorAll('.profile-photo-layer');
   const tagCounter = document.querySelector('[data-hud-photo-counter]');
 
   if (!deck || !layers.length) return;
 
-  // Yahan aap apni images ka path customize kar sakte hain
   const IMAGES = [
     'images/profile1.jpg',
     'images/profile2.jpg',
@@ -1796,56 +1795,55 @@ const CASE_ORDER = ['portfolio', 'birthday', 'github'];
   ];
 
   let currentIndex = 0;
-  let isGlitching = false;
+  let isTransitioning = false;
 
-  // Initial load par sabhi 5 layers par pehli photo lagana
   layers.forEach((layer) => {
     layer.style.backgroundImage = `url('${IMAGES[0]}')`;
   });
 
-  // Preload all assets
   IMAGES.forEach((src) => {
     const img = new Image();
     img.src = src;
   });
 
-  const triggerClipGlitch = (nextIdx = null) => {
-    if (isGlitching || IMAGES.length <= 1) return;
-    isGlitching = true;
+  const triggerCrossfade = (nextIdx = null) => {
+    if (isTransitioning || IMAGES.length <= 1) return;
+    isTransitioning = true;
 
     const targetIdx = nextIdx !== null ? nextIdx : (currentIndex + 1) % IMAGES.length;
     const nextSrc = IMAGES[targetIdx];
+    const incomingLayer = layers[1];
+    incomingLayer.style.backgroundImage = `url('${nextSrc}')`;
 
-    // Layers 2, 3, 4, 5 par incoming photo set hogi polygon slicing animation ke liye
-    for (let i = 1; i < layers.length; i++) {
-      layers[i].style.backgroundImage = `url('${nextSrc}')`;
-    }
-
-    deck.classList.add('is-glitching');
-
-    // Peak glitch displacement (160ms) par base layer change hogi
-    setTimeout(() => {
+    if (reducedMotion()) {
       layers[0].style.backgroundImage = `url('${nextSrc}')`;
       currentIndex = targetIdx;
       if (tagCounter) {
         tagCounter.textContent = `FRAME [0${currentIndex + 1}/0${IMAGES.length}]`;
       }
-    }, 160);
+      isTransitioning = false;
+      return;
+    }
 
-    // Animation end hone par cleanup
+    requestAnimationFrame(() => deck.classList.add('is-crossfading'));
     setTimeout(() => {
-      deck.classList.remove('is-glitching');
-      isGlitching = false;
-    }, 360);
+      layers[0].style.backgroundImage = `url('${nextSrc}')`;
+      deck.classList.remove('is-crossfading');
+      currentIndex = targetIdx;
+      if (tagCounter) {
+        tagCounter.textContent = `FRAME [0${currentIndex + 1}/0${IMAGES.length}]`;
+      }
+      setTimeout(() => {
+        isTransitioning = false;
+      }, 700);
+    }, 700);
   };
 
-  // Har 4.5 seconds mein automatic glitch transition
-  let autoTimer = setInterval(() => triggerClipGlitch(), 4500);
+  let autoTimer = setInterval(() => triggerCrossfade(), 4500);
 
-  // Click karne par instant switch
   deck.addEventListener('click', () => {
     clearInterval(autoTimer);
-    triggerClipGlitch();
-    autoTimer = setInterval(() => triggerClipGlitch(), 4500);
+    triggerCrossfade();
+    autoTimer = setInterval(() => triggerCrossfade(), 4500);
   });
-})();QQQQQQQQ
+})();

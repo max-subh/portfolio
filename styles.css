@@ -1,4 +1,4 @@
-/* ───────────────────────── tokens ───────────────────────── */
+/* Design tokens */
 :root {
   --bg: #0a0b09;
   --bg-elev: #12140f;
@@ -14,7 +14,6 @@
   --shadow-overlay: rgba(0, 0, 0, 0.72);
   --ring-focus: var(--accent);
 
-  /* Dynamic Cyber Highlights */
   --highlight-color: #ffe600;
   --highlight-glow: rgba(255, 230, 0, 0.65);
   --photo-glow: rgba(255, 230, 0, 0.22);
@@ -128,7 +127,7 @@ button:focus-visible,
   transform: translateY(16px);
 }
 
-/* Subtle Grain */
+/* Background texture */
 .grain {
   position: fixed;
   inset: 0;
@@ -146,7 +145,7 @@ main,
   z-index: 2;
 }
 
-/* ───────────────────────── Nav ───────────────────────── */
+/* Navigation */
 .nav {
   position: absolute;
   top: 0;
@@ -229,7 +228,7 @@ main,
   font-variant-numeric: tabular-nums;
 }
 
-/* Sound & Cmd+K Header Buttons */
+/* Header controls */
 .nav__sound,
 .nav__cmdk-btn {
   display: inline-grid;
@@ -263,7 +262,7 @@ main,
   transform: scale(1.08);
 }
 
-/* Retro Glitch Clock */
+/* Clock */
 [data-ist-clock] {
   font-family: var(--font-mono);
   font-variant-numeric: tabular-nums;
@@ -385,7 +384,7 @@ main,
   }
 }
 
-/* View Transitions Circle Reveal */
+/* Theme transition */
 ::view-transition-old(root),
 ::view-transition-new(root) {
   animation: none;
@@ -410,7 +409,7 @@ main,
   }
 }
 
-/* ───────────────────────── Hero ───────────────────────── */
+/* Hero */
 .hero {
   min-height: 100svh;
   padding: 104px var(--gutter) 56px;
@@ -503,7 +502,7 @@ main,
   animation: pulse 2.4s ease-in-out infinite;
 }
 
-/* ── Hero 2-Column Desktop Layout ── */
+/* Hero layout */
 .hero__layout {
   display: grid;
   grid-template-columns: 1.25fr 0.75fr;
@@ -526,7 +525,36 @@ main,
   max-width: 18ch;
 }
 
-/* Interactive word hover */
+@media (prefers-reduced-motion: no-preference) {
+  .hero-title__reveal {
+    display: inline-block;
+    animation: hero-word-in .8s cubic-bezier(.2, .7, .2, 1) both;
+  }
+
+  .hero__title > span:nth-child(2) .hero-title__reveal {
+    animation-delay: .16s;
+  }
+
+  .hero__title > span:nth-child(3) .hero-title__reveal {
+    animation-delay: .32s;
+  }
+}
+
+@keyframes hero-word-in {
+  from {
+    opacity: 0;
+    clip-path: inset(100% 0 0);
+    translate: 0 .4em;
+  }
+
+  to {
+    opacity: 1;
+    clip-path: inset(0);
+    translate: 0 0;
+  }
+}
+
+/* Interactive words */
 .interactive-word {
   display: inline-block;
   cursor: pointer;
@@ -548,7 +576,7 @@ main,
   text-shadow: 0 0 28px var(--highlight-glow) !important;
 }
 
-/* Auto-Typing Subtitle Line */
+/* Role line */
 .hero__typewriter {
   margin-top: 18px;
   font-family: 'Orbitron', monospace;
@@ -682,7 +710,7 @@ main,
   transform: translateY(2px);
 }
 
-/* ── Cyber HUD Profile Frame & Glitch Deck ── */
+/* Profile frame */
 .hero__media {
   display: flex;
   justify-content: flex-end;
@@ -708,8 +736,7 @@ main,
   border-color: var(--highlight-color);
 }
 
-/* ── Authentic Codrops Clip-Path Image Glitch (Zero Zoom / Pure Polygon Slice) ── */
-.glitch-deck {
+.profile-photo-deck {
   position: relative;
   width: 100%;
   height: 100%;
@@ -719,7 +746,7 @@ main,
   background-color: var(--bg-elev);
 }
 
-.glitch-layer-img {
+.profile-photo-layer {
   position: absolute;
   top: 0;
   left: 0;
@@ -729,90 +756,23 @@ main,
   background-position: center;
   background-size: cover;
   border-radius: 14px;
-  transform: translate3d(0, 0, 0);
-  pointer-events: none;
-}
-
-/* Base layer visible, others hidden */
-.glitch-layer-img:nth-child(n+2) {
   opacity: 0;
+  pointer-events: none;
+  transition: opacity .7s ease;
 }
 
-/* Active Glitch Trigger State */
-.glitch-deck.is-glitching .glitch-layer-img:nth-child(n+2) {
+.profile-photo-layer:first-child,
+.profile-photo-deck.is-crossfading .profile-photo-layer:nth-child(2) {
   opacity: 1;
 }
 
-.glitch-deck.is-glitching .glitch-layer-img:nth-child(1) {
-  animation: glitch-base-jitter 0.35s steps(2, end) forwards;
+@media (prefers-reduced-motion: reduce) {
+  .profile-photo-layer {
+    transition: none;
+  }
 }
 
-.glitch-deck.is-glitching .glitch-layer-img:nth-child(2) {
-  background-color: rgba(255, 30, 80, 0.45);
-  background-blend-mode: hard-light;
-  animation: glitch-slice-1 0.35s steps(2, end) forwards;
-}
-
-.glitch-deck.is-glitching .glitch-layer-img:nth-child(3) {
-  background-color: rgba(0, 245, 255, 0.45);
-  background-blend-mode: hard-light;
-  animation: glitch-slice-2 0.35s steps(2, end) forwards;
-}
-
-.glitch-deck.is-glitching .glitch-layer-img:nth-child(4) {
-  background-color: rgba(212, 249, 60, 0.35);
-  background-blend-mode: color-dodge;
-  animation: glitch-slice-3 0.35s steps(1, end) forwards;
-}
-
-.glitch-deck.is-glitching .glitch-layer-img:nth-child(5) {
-  background-color: rgba(255, 255, 255, 0.3);
-  background-blend-mode: overlay;
-  animation: glitch-flash 0.35s steps(1, end) forwards;
-}
-
-@keyframes glitch-base-jitter {
-  0%   { transform: translate3d(-3px, 0, 0); }
-  25%  { transform: translate3d(3px, 0, 0); }
-  50%  { transform: translate3d(-2px, 0, 0); }
-  75%  { transform: translate3d(2px, 0, 0); }
-  100% { transform: translate3d(0, 0, 0); }
-}
-
-@keyframes glitch-slice-1 {
-  0%   { clip-path: polygon(0 2%, 100% 2%, 100% 5%, 0 5%); transform: translate3d(-8px, 0, 0); }
-  20%  { clip-path: polygon(0 15%, 100% 15%, 100% 15%, 0 15%); transform: translate3d(6px, 0, 0); }
-  35%  { clip-path: polygon(0 10%, 100% 10%, 100% 20%, 0 20%); transform: translate3d(-5px, 0, 0); }
-  50%  { clip-path: polygon(0 40%, 100% 40%, 100% 42%, 0 42%); transform: translate3d(7px, 0, 0); }
-  65%  { clip-path: polygon(0 50%, 100% 50%, 100% 65%, 0 65%); transform: translate3d(-6px, 0, 0); }
-  80%  { clip-path: polygon(0 80%, 100% 80%, 100% 85%, 0 85%); transform: translate3d(4px, 0, 0); }
-  100% { clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%); transform: translate3d(0, 0, 0); opacity: 0; }
-}
-
-@keyframes glitch-slice-2 {
-  0%   { clip-path: polygon(0 25%, 100% 25%, 100% 30%, 0 30%); transform: translate3d(8px, 0, 0); }
-  25%  { clip-path: polygon(0 3%, 100% 3%, 100% 3%, 0 3%); transform: translate3d(-7px, 0, 0); }
-  40%  { clip-path: polygon(0 60%, 100% 60%, 100% 70%, 0 70%); transform: translate3d(5px, 0, 0); }
-  60%  { clip-path: polygon(0 85%, 100% 85%, 100% 90%, 0 90%); transform: translate3d(-6px, 0, 0); }
-  85%  { clip-path: polygon(0 35%, 100% 35%, 100% 45%, 0 45%); transform: translate3d(6px, 0, 0); }
-  100% { clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%); transform: translate3d(0, 0, 0); opacity: 0; }
-}
-
-@keyframes glitch-slice-3 {
-  0%   { clip-path: polygon(0 70%, 100% 70%, 100% 72%, 0 72%); transform: translate3d(-10px, 0, 0); }
-  30%  { clip-path: polygon(0 12%, 100% 12%, 100% 18%, 0 18%); transform: translate3d(8px, 0, 0); }
-  60%  { clip-path: polygon(0 48%, 100% 48%, 100% 55%, 0 55%); transform: translate3d(-5px, 0, 0); }
-  90%  { clip-path: polygon(0 92%, 100% 92%, 100% 96%, 0 96%); transform: translate3d(4px, 0, 0); }
-  100% { clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%); transform: translate3d(0, 0, 0); opacity: 0; }
-}
-
-@keyframes glitch-flash {
-  0%, 100% { opacity: 0; }
-  45%      { opacity: 0.85; transform: translate3d(3px, 0, 0); }
-  55%      { opacity: 0; }
-}
-
-/* HUD Corner Brackets */
+/* Frame corners */
 .hud-corner {
   position: absolute;
   width: 12px;
@@ -828,7 +788,7 @@ main,
 .hud-corner--bl { bottom: -4px; left: -4px; border-width: 0 0 2px 2px; }
 .hud-corner--br { bottom: -4px; right: -4px; border-width: 0 2px 2px 0; }
 
-/* Bottom Telemetry Tag */
+/* Photo counter */
 .hud-tag {
   position: absolute;
   bottom: -14px;
@@ -874,7 +834,7 @@ main,
   opacity: 1;
 }
 
-/* Mobile View: Hide Photo on Mobile */
+/* Mobile hero */
 @media (max-width: 900px) {
   .hero__layout {
     grid-template-columns: 1fr;
@@ -885,7 +845,22 @@ main,
   }
 }
 
-/* ───────────────────────── Marquee Ticker ───────────────────────── */
+@media (max-width: 760px) {
+  .hero {
+    min-height: auto;
+    padding-bottom: 20px;
+  }
+
+  .hero__title {
+    max-width: 8ch;
+  }
+
+  #about {
+    padding-top: 32px;
+  }
+}
+
+/* Skills marquee */
 .marquee {
   position: relative;
   z-index: 2;
@@ -943,12 +918,18 @@ main,
   margin: 0 4px;
 }
 
+@media (max-width: 760px) {
+  .marquee {
+    padding-block: 12px;
+  }
+}
+
 @keyframes marquee-scroll {
   from { transform: translateX(0); }
   to { transform: translateX(-50%); }
 }
 
-/* ───────────────────────── Sections Base ───────────────────────── */
+/* Sections */
 .section {
   max-width: var(--max-w);
   margin: 0 auto;
@@ -1067,7 +1048,7 @@ main,
   color: var(--ink-mute);
 }
 
-/* ───────────────────────── About ───────────────────────── */
+/* About */
 .about {
   display: grid;
   grid-template-columns: 1.1fr 1fr;
@@ -1139,7 +1120,7 @@ main,
   color: var(--ink-mute);
 }
 
-/* ───────────────────────── Bento Grid ───────────────────────── */
+/* Quick facts */
 .bento-grid {
   display: grid;
   grid-template-columns: repeat(12, 1fr);
@@ -1264,7 +1245,7 @@ main,
   color: var(--ink-mute);
 }
 
-/* Bento Music Card (Clickable YouTube Playlist Styling) */
+/* Music card */
 .bento-card--music {
   cursor: pointer;
   text-decoration: none;
@@ -1340,7 +1321,7 @@ main,
   100% { transform: scaleY(1); }
 }
 
-/* Bento Location Card */
+/* Location card */
 .bento-location-content h4 {
   margin: 0 0 4px;
   font-size: 18px;
@@ -1375,7 +1356,7 @@ main,
   animation: pulse 1.5s infinite;
 }
 
-/* ───────────────────────── Horizontal Work Scroll ───────────────────────── */
+/* Projects */
 .work-rail {
   height: 420vh;
   position: relative;
@@ -1539,7 +1520,7 @@ main,
   overflow: hidden;
 }
 
-/* Hover rotation for procedural gyro/art */
+/* Project artwork */
 .work-card:hover .work-card__art svg circle {
   transition: transform 0.6s ease;
 }
@@ -1660,7 +1641,7 @@ main,
   }
 }
 
-/* ───────────────────────── Section 03: Education Tabs & Cards ───────────────────────── */
+/* Education */
 .edu-tabs-nav {
   display: flex;
   gap: 12px;
@@ -1719,6 +1700,10 @@ main,
   animation: tabFadeIn .45s cubic-bezier(.2, .7, .2, 1) both;
 }
 
+.edu-tab-pane > .edu-card {
+  margin-bottom: 12px;
+}
+
 @keyframes tabFadeIn {
   from { opacity: 0; transform: translateY(12px); }
   to { opacity: 1; transform: translateY(0); }
@@ -1726,7 +1711,7 @@ main,
 
 .edu-grid {
   display: grid;
-  gap: 20px;
+  gap: 12px;
 }
 
 .edu-card {
@@ -1836,7 +1821,7 @@ main,
   border: 1px solid var(--line);
 }
 
-/* ───────────────────────── Experiments Grid ───────────────────────── */
+/* Practice */
 .experiments-grid {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
@@ -1973,7 +1958,7 @@ main,
   transform: translate(3px, -3px);
 }
 
-/* ───────────────────────── Code Sandbox Widget ───────────────────────── */
+/* Code sandbox */
 .code-sandbox {
   margin-top: 36px;
   background: var(--bg-elev);
@@ -2091,7 +2076,7 @@ main,
   line-height: 1.5;
 }
 
-/* ───────────────────────── AI Feature / Roadmap ───────────────────────── */
+/* Roadmap */
 .ai-feature {
   margin-bottom: 72px;
   padding: 40px;
@@ -2329,7 +2314,7 @@ main,
   max-width: 44ch;
 }
 
-/* ───────────────────────── Contact ───────────────────────── */
+/* Contact */
 .contact {
   max-width: var(--max-w);
   margin: 0 auto;
@@ -2458,7 +2443,7 @@ main,
   }
 }
 
-/* ───────────────────────── Footer ───────────────────────── */
+/* Footer */
 .foot {
   max-width: var(--max-w);
   margin: 0 auto;
@@ -2504,7 +2489,7 @@ main,
   transform: translate(50%, 0);
 }
 
-/* ───────────────────────── Case Study Modal ───────────────────────── */
+/* Project detail modal */
 .case-overlay {
   position: fixed;
   inset: 0;
@@ -2772,7 +2757,7 @@ main,
   border-color: var(--ink);
 }
 
-/* ───────────────────────── Cmd + K Command Palette ───────────────────────── */
+/* Command palette */
 .cmdk-backdrop {
   position: fixed;
   inset: 0;
@@ -2885,7 +2870,7 @@ main,
   color: var(--ink);
 }
 
-/* ───────────────────────── Live Telemetry HUD Pill ───────────────────────── */
+/* Performance indicator */
 .hud-telemetry {
   position: fixed;
   bottom: 24px;
@@ -2936,7 +2921,7 @@ main,
   }
 }
 
-/* ───────────────────────── Custom Cursor ───────────────────────── */
+/* Custom cursor */
 .cursor-dot,
 .cursor-ring {
   position: fixed;
@@ -3028,7 +3013,7 @@ main,
   }
 }
 
-/* ───────────────────────── Scrub Rail ───────────────────────── */
+/* Scroll progress */
 .scrub {
   position: fixed;
   top: 96px;
@@ -3148,7 +3133,7 @@ main,
   }
 }
 
-/* ───────────────────────── Card Spotlight ───────────────────────── */
+/* Card spotlight */
 .work-card::before,
 .exp-card::before,
 .edu-card::before,

@@ -4,13 +4,12 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
-  <title>SUBHAM SHIT — BCA Student & Developer</title>
+  <title>SUBHAM SHIT — UG Student & Developer</title>
   <meta name="description"
-    content="SUBHAM SHIT is a BCA student from Medinipur, West Bengal, interested in C/C++, Java, and Python." />
+    content="SUBHAM SHIT is an undergraduate student from Medinipur, West Bengal, learning software development through projects in C/C++, Java, Python, and web development." />
   <meta name="theme-color" content="#0a0b09" data-theme-color />
   <meta name="color-scheme" content="dark light" />
 
-  <!-- Logo Favicon -->
   <link rel="icon" type="image/png" href="images/logo.png" />
 
   <script>
@@ -36,13 +35,11 @@
 <body>
   <div class="grain" aria-hidden="true"></div>
 
-  <!-- Custom Cursor -->
   <div class="cursor-dot" aria-hidden="true" data-cursor-dot></div>
   <div class="cursor-ring" aria-hidden="true" data-cursor-ring>
     <span class="cursor-ring__label" data-cursor-label></span>
   </div>
 
-  <!-- Navigation Header -->
   <header class="nav">
     <a href="#hero" class="nav__brand">
       <img src="images/logo.png" alt="Logo"
@@ -58,12 +55,10 @@
       <a class="nav__link" href="#contact">Contact</a>
     </nav>
     <div class="nav__right">
-      <!-- Quick Cmd+K Palette Trigger Button -->
       <button class="nav__cmdk-btn" data-cmdk-trigger type="button" aria-label="Open command palette" title="Command Palette (Ctrl + K)">
         <span class="cmdk-key">⌘K</span>
       </button>
 
-      <!-- Sound Toggle Button -->
       <button class="nav__sound" data-sound-toggle type="button" aria-label="Toggle sound effects" title="Toggle sound">
         <svg class="sound-icon-on" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor"
           stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
@@ -79,7 +74,7 @@
         </svg>
       </button>
 
-      <!-- Theme Toggle Button -->
+
       <button class="nav__theme" data-theme-toggle type="button" aria-label="Toggle theme" aria-pressed="false"
         title="Toggle theme">
         <svg class="nav__theme-icon nav__theme-icon--sun" width="14" height="14" viewBox="0 0 16 16" fill="none"
@@ -100,28 +95,22 @@
   </header>
 
   <main>
-    <!-- Hero Section -->
     <section class="hero" id="hero" data-hero-interactive>
       <canvas class="hero__canvas" data-hero-canvas aria-hidden="true"></canvas>
 
       <div class="hero__meta" data-fade-in data-delay=".2s">
         <div>
           <b style="font-family: var(--font-mono)">subhamshit136@gmail.com</b>
-          <span data-scramble>whoami → bca student · medinipur, india · code</span>
-        </div>
-        <div class="hero__meta-right">
-          <b data-ist-clock data-suffix=" IST">— IST</b>
-          <span class="hero__status"><i aria-hidden="true"></i>learning · building · growing</span>
+          <span data-scramble>ug student · medinipur, india</span>
         </div>
       </div>
 
-      <!-- 2-Column Container: Left Text & Right Photo -->
       <div class="hero__layout">
         <div class="hero__content">
           <h1 class="hero__title">
-            <span class="interactive-word">Hi,</span>
-            <span class="interactive-word">I'm</span>
-            <span class="interactive-word interactive-word--highlight">Subham.</span>
+            <span class="interactive-word"><span class="hero-title__reveal">Hi,</span></span>
+            <span class="interactive-word"><span class="hero-title__reveal">I'm</span></span>
+            <span class="interactive-word interactive-word--highlight"><span class="hero-title__reveal">Subham.</span></span>
           </h1>
 
           <div class="hero__typewriter" data-fade-in data-delay="0.3s">
@@ -130,12 +119,10 @@
           </div>
 
           <p class="hero__lede" data-fade-in data-delay="0.5s">
-            Exploring the intersection of backend logic, full-stack development, and AI tools to turn
-            complex ideas into practical, real-world digital solutions.
-            <em class="interactive-word">C/C++</em>,
-            <em class="interactive-word">Java</em>,
-            <em class="interactive-word">Python</em>,
-            and <em class="interactive-word interactive-word--highlight">AI</em>.
+            I'm an undergraduate student in Medinipur, India. I learn by building small projects in
+            <em class="interactive-word">C/C++</em>, <em class="interactive-word">Java</em>, and
+            <em class="interactive-word">Python</em>, and I'm currently exploring web development and
+            <em class="interactive-word interactive-word--highlight">AI tools</em>.
           </p>
 
           <div class="hero__ctas" data-fade-in data-delay="0.7s">
@@ -158,27 +145,20 @@
           </div>
         </div>
 
-        <!-- Right Side: Profile Image with Codrops 5-Layer Clip-Path Glitch Deck -->
         <div class="hero__media" data-fade-in data-delay="0.4s">
           <div class="hero__photo-wrapper cyber-hud-frame">
-            <!-- HUD Corner Crosshairs -->
             <span class="hud-corner hud-corner--tl" aria-hidden="true"></span>
             <span class="hud-corner hud-corner--tr" aria-hidden="true"></span>
             <span class="hud-corner hud-corner--bl" aria-hidden="true"></span>
             <span class="hud-corner hud-corner--br" aria-hidden="true"></span>
 
-            <!-- Codrops Style 5-Layer Glitch Container -->
-            <div class="glitch-deck" data-glitch-deck>
-              <div class="glitch-layer-img" style="background-image: url('profile.jpg');"></div>
-              <div class="glitch-layer-img" style="background-image: url('profile.jpg');"></div>
-              <div class="glitch-layer-img" style="background-image: url('profile.jpg');"></div>
-              <div class="glitch-layer-img" style="background-image: url('profile.jpg');"></div>
-              <div class="glitch-layer-img" style="background-image: url('profile.jpg');"></div>
+            <div class="profile-photo-deck" data-profile-photo-deck>
+              <div class="profile-photo-layer"></div>
+              <div class="profile-photo-layer"></div>
             </div>
 
             <div class="hero__photo-glow" aria-hidden="true"></div>
 
-            <!-- HUD Bottom Telemetry Tag -->
             <div class="hud-tag">
               <span class="hud-tag__dot"></span>
               <span data-hud-photo-counter>FRAME [01/04]</span>
@@ -188,12 +168,10 @@
       </div>
     </section>
 
-    <!-- Marquee Ticker (Infinite Seamless Chain Reaction Loop) -->
     <div class="marquee" data-marquee aria-hidden="true">
       <div class="marquee__track" data-marquee-track>
-        <!-- Group 1 -->
         <div class="marquee__group">
-          <span>BCA Student</span>
+          <span>UG Student</span>
           <span><em>C / C++</em></span>
           <span>Java</span>
           <span>Python</span>
@@ -203,9 +181,8 @@
           <span><em>Learning by building</em></span>
           <span>Problem Solving</span>
         </div>
-        <!-- Group 2 (Duplicate for Seamless Chain Loop) -->
         <div class="marquee__group" aria-hidden="true">
-          <span>BCA Student</span>
+          <span>UG Student</span>
           <span><em>C / C++</em></span>
           <span>Java</span>
           <span>Python</span>
@@ -218,7 +195,6 @@
       </div>
     </div>
 
-    <!-- 01 About -->
     <section class="section section--narrow" id="about">
       <div class="section__top reveal" data-reveal data-ghost="01">
         <span class="section__num" data-scramble>01 / About</span>
@@ -227,13 +203,12 @@
       <div class="about">
         <div class="about__copy reveal" data-reveal>
           <p>
-            I'm a Bachelor of Computer Applications (BCA) student based in <em>Medinipur, West Bengal</em>.
-            I'm building my computer science foundation and exploring the software engineering principles behind
-            reliable systems.
+            I'm an undergraduate student based in <em>Medinipur, West Bengal</em>, building a strong foundation in
+            computer science and software development.
           </p>
           <p>
-            I focus actively on <em>C/C++, Java, and Python</em>. I learn by building small tools, experimenting with
-            creative UI patterns, and converting conceptual ideas into clean, working code.
+            I practice with <em>C/C++, Java, and Python</em>, and learn by building small projects—from programming
+            exercises to interactive web pages.
           </p>
         </div>
         <div class="about__facts reveal" data-reveal style="--d: 0.1s">
@@ -243,7 +218,7 @@
           </div>
           <div class="about__fact">
             <span>Currently</span>
-            <div><b>UG</b> <em>· Midnapore City College</em></div>
+            <div><b>Undergraduate student</b> <em>· Midnapore City College</em></div>
           </div>
           <div class="about__fact">
             <span>Languages</span>
@@ -330,18 +305,16 @@
       </div>
     </section>
 
-    <!-- 02 Selected Work -->
     <section class="work-rail" id="work" data-work-rail>
       <div class="work-rail__sticky">
         <div class="work-rail__track" data-work-track>
           <div class="work-rail__intro" data-ghost="02">
             <span class="section__num" data-scramble>02 / Selected work</span>
-            <h2>A few <em>recent</em> things, built with focus and care.</h2>
-            <p>Personal websites, UI motion experiments, and web apps built from concept to launch.</p>
+            <h2>A few projects I've <em>worked on.</em></h2>
+            <p>Web projects and coding practice, with links to the live sites and source code.</p>
             <div class="work-rail__hint">Scroll to advance</div>
           </div>
 
-          <!-- Card 1 -->
           <article class="work-card">
             <button class="work-card__hit" data-open-case="portfolio" aria-label="Open Personal Portfolio case study">
               <div class="work-card__head">
@@ -352,8 +325,8 @@
               <div class="work-card__body">
                 <h3 class="work-card__title">Subham <em>Portfolio</em></h3>
                 <p class="work-card__blurb">
-                  A personal creative portfolio deployed on Vercel featuring physics-based tilt, canvas flow-field,
-                  custom cursor, and smooth transitions built using vanilla technologies.
+                  My personal website, built with HTML, CSS, and JavaScript. It includes a responsive layout, theme
+                  switching, and interactive details.
                 </p>
                 <div class="work-card__tags">
                   <span>HTML5</span><span>CSS3</span><span>JavaScript</span><span>Vercel</span>
@@ -378,7 +351,6 @@
             </div>
           </article>
 
-          <!-- Card 2 -->
           <article class="work-card">
             <button class="work-card__hit" data-open-case="birthday" aria-label="Open Birthday Page case study">
               <div class="work-card__head">
@@ -389,8 +361,7 @@
               <div class="work-card__body">
                 <h3 class="work-card__title">Celebration <em>Experience</em></h3>
                 <p class="work-card__blurb">
-                  An interactive celebration web app with custom live countdown timers, personal message reveals, photo
-                  album transitions, and particle confetti.
+                  A birthday website with a live countdown, personal messages, a photo gallery, and confetti effects.
                 </p>
                 <div class="work-card__tags">
                   <span>React</span><span>TypeScript</span><span>Vercel</span>
@@ -416,7 +387,6 @@
             </div>
           </article>
 
-          <!-- Card 3 -->
           <article class="work-card">
             <button class="work-card__hit" data-open-case="github" aria-label="Open GitHub Projects case study">
               <div class="work-card__head">
@@ -451,8 +421,7 @@
               <div class="work-card__body">
                 <h3 class="work-card__title">Code <em>Repositories</em></h3>
                 <p class="work-card__blurb">
-                  Public repositories featuring daily problem solving, algorithms practice, scripts, and front-end
-                  interface prototypes.
+                  My GitHub profile, with algorithm practice, Java and Python projects, and front-end experiments.
                 </p>
                 <div class="work-card__tags">
                   <span>Git</span><span>Open Source</span><span>CLI</span>
@@ -482,14 +451,12 @@
       </div>
     </section>
 
-    <!-- 03 Education & Academic Pathway -->
     <section class="section section--narrow" id="experience">
       <div class="section__top reveal" data-reveal data-ghost="03">
         <span class="section__num" data-scramble>03 / Education</span>
         <h2 class="section__title">Academic roots, <em>applied</em> practice.</h2>
       </div>
 
-      <!-- Tab Switcher Navigation -->
       <div class="edu-tabs-nav reveal" data-reveal>
         <button type="button" class="edu-tab-btn active" data-tab-target="#tab-education">
           <span>01</span> Education
@@ -502,7 +469,6 @@
         </button>
       </div>
 
-      <!-- Tab 1: Education -->
       <div id="tab-education" class="edu-tab-pane active reveal" data-reveal>
         <div class="edu-card">
           <div class="edu-card__head">
@@ -574,7 +540,6 @@
         </div>
       </div>
 
-      <!-- Tab 2: Skills -->
       <div id="tab-skills" class="edu-tab-pane">
         <div class="edu-grid">
           <div class="edu-card">
@@ -626,7 +591,6 @@
         </div>
       </div>
 
-      <!-- Tab 3: Milestones -->
       <div id="tab-milestones" class="edu-tab-pane">
         <div class="edu-grid">
           <div class="edu-card">
@@ -679,7 +643,6 @@
       </div>
     </section>
 
-    <!-- 04 Practice / Tracks & Interactive Terminal -->
     <section class="section section--narrow" id="experiments">
       <div class="section__top reveal" data-reveal data-ghost="04">
         <span class="section__num" data-scramble>04 / Practice</span>
@@ -776,7 +739,7 @@
         </article>
       </div>
 
-      <!-- Interactive Code Sandbox Widget -->
+
       <div class="code-sandbox reveal" data-reveal style="--d: 0.2s">
         <div class="code-sandbox__header">
           <div class="code-sandbox__tabs">
@@ -822,7 +785,6 @@ int main() {
       </div>
     </section>
 
-    <!-- 05 Roadmap Section -->
     <section class="section section--narrow" id="roadmap">
       <div class="section__top reveal" data-reveal data-ghost="05">
         <span class="section__num" data-scramble>05 / Roadmap</span>
@@ -882,7 +844,6 @@ int main() {
       </div>
     </section>
 
-    <!-- 06 Contact Section -->
     <section class="contact" id="contact">
       <div class="contact__top reveal" data-reveal data-ghost="06">
         <span data-scramble>06 / Contact</span>
@@ -968,14 +929,12 @@ int main() {
     </div>
   </div>
 
-  <!-- Hidden Admin Panel (Visible with ?admin=subham24) -->
   <div id="admin-trigger" style="display: none; position: fixed; bottom: 20px; left: 20px; z-index: 10000;">
     <button id="admin-open-btn" style="background: var(--accent); color: var(--ink-on-accent); padding: 12px 22px; border-radius: 999px; font-family: var(--font-mono); font-size: 11px; font-weight: bold; border: none; cursor: pointer; box-shadow: 0 0 24px var(--accent);">
       ⚙ Admin Console
     </button>
   </div>
 
-  <!-- Full Control Admin Modal -->
   <div id="admin-modal" style="display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.85); z-index: 10001; place-items: center; padding: 20px; backdrop-filter: blur(10px);">
     <div style="background: var(--bg-elev); border: 1px solid var(--line-strong); padding: 28px; border-radius: 16px; width: min(100%, 540px); color: var(--ink); font-family: var(--font-sans); max-height: 90vh; overflow-y: auto;">
       <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
