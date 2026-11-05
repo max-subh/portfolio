@@ -418,7 +418,6 @@ main,
   display: flex;
   flex-direction: column;
   position: relative;
-  overflow: hidden;
 }
 
 .hero::before {
@@ -438,8 +437,8 @@ main,
 .hero__canvas {
   position: absolute;
   top: 0;
-  left: 0;
-  width: 100%;
+  left: calc(50% - 50vw);
+  width: 100vw;
   height: 100%;
   pointer-events: none;
   z-index: 1;
@@ -847,12 +846,36 @@ main,
 
 @media (max-width: 760px) {
   .hero {
-    min-height: auto;
-    padding-bottom: 20px;
+    min-height: 100svh;
+    padding-top: 88px;
+    padding-bottom: 24px;
+  }
+
+  .hero__layout {
+    margin-top: auto;
+    margin-bottom: auto;
   }
 
   .hero__title {
     max-width: 8ch;
+    margin-top: 12px;
+    font-size: clamp(56px, 15vw, 68px);
+  }
+
+  .hero__typewriter {
+    margin-top: 14px;
+    font-size: clamp(15px, 4vw, 17px);
+    letter-spacing: 0.05em;
+  }
+
+  .hero__lede {
+    margin-top: 22px;
+    font-size: clamp(18px, 4.8vw, 20px);
+    line-height: 1.5;
+  }
+
+  .hero__ctas {
+    margin-top: 24px;
   }
 
   #about {

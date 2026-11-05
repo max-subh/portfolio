@@ -118,7 +118,7 @@ let globalTypewriterTick = null;
       const stored = localStorage.getItem('portfolio_roles');
       if (stored) return JSON.parse(stored);
     } catch (_) {}
-    return ['UG STUDENT', 'FULL-STACK DEVELOPER', 'GRAPHICS DESIGNER', 'CREATIVE BUILDER'];
+    return ['UG STUDENT.', 'FULL-STACK DEVELOPER.', 'GRAPHICS DESIGNER.', 'CREATIVE BUILDER.'];
   };
 
   let roles = getRoles();
@@ -316,62 +316,94 @@ let globalTypewriterTick = null;
   const ctx = canvas.getContext('2d');
   if (!ctx) return;
 
-  let w = 0, h = 0;
-  const resize = () => {
-    const r = hero.getBoundingClientRect();
-    const dpr = Math.min(window.devicePixelRatio || 1, 2);
-    w = r.width;
-    h = r.height;
-    canvas.width = Math.round(w * dpr);
-    canvas.height = Math.round(h * dpr);
-    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+  const hexToRgb = (value, fallback) => {
+    const hex = value.trim().replace(/^#/, '');
+    const normalized = hex.length === 3 ? [...hex].map((c) => c + c).join('') : hex;
+    if (!/^[\da-f]{6}$/i.test(normalized)) return fallback;
+    const color = Number.parseInt(normalized, 16);
+    return [(color >> 16) & 255, (color >> 8) & 255, color & 255];
   };
-  resize();
 
-  const COUNT = 160;
+  let accent = [212, 249, 60];
+  let ink = [237, 240, 227];
+  const readTokens = () => {
+    const styles = getComputedStyle(document.documentElement);
+    accent = hexToRgb(styles.getPropertyValue('--accent'), accent);
+    ink = hexToRgb(styles.getPropertyValue('--ink'), ink);
+  };
+  readTokens();
+
+  let w = 0, h = 0;
   const parts = [];
   const spawn = (p) => {
     p.x = Math.random() * w;
     p.y = Math.random() * h;
     p.px = p.x;
     p.py = p.y;
-    p.sp = 18 + Math.random() * 26;
-    p.isAccent = Math.random() < 0.45;
-    p.a = 0.22 + Math.random() * 0.48;
-    p.life = 3 + Math.random() * 6;
+    p.sp = 18 + Math.random() * 36;
+    p.isAccent = Math.random() < 0.6;
+    p.a = 0.2 + Math.random() * 0.35;
+    p.life = 4 + Math.random() * 8;
   };
 
-  for (let i = 0; i < COUNT; i++) {
-    const p = {};
-    spawn(p);
-    p.life *= Math.random();
-    parts.push(p);
-  }
+  const resize = () => {
+    const r = canvas.getBoundingClientRect();
+    const nextW = Math.max(1, r.width);
+    const nextH = Math.max(1, r.height);
+    const scaleX = w ? nextW / w : 0;
+    const scaleY = h ? nextH / h : 0;
+    w = nextW;
+    h = nextH;
+
+    const dpr = Math.min(window.devicePixelRatio || 1, 1.5, Math.sqrt(3_000_000 / (w * h)));
+    canvas.width = Math.round(w * dpr);
+    canvas.height = Math.round(h * dpr);
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    ctx.clearRect(0, 0, w, h);
+
+    const count = Math.max(36, Math.min(160, Math.round((w * h) / 15000)));
+    parts.forEach((p) => {
+      if (scaleX && scaleY) {
+        p.x *= scaleX;
+        p.px *= scaleX;
+        p.y *= scaleY;
+        p.py *= scaleY;
+      }
+    });
+    parts.length = Math.min(parts.length, count);
+    while (parts.length < count) {
+      const p = {};
+      spawn(p);
+      p.life *= Math.random();
+      parts.push(p);
+    }
+  };
+  resize();
 
   let mx = -9999, my = -9999;
-  let targetMx = -9999, targetMy = -9999;
 
-  window.addEventListener('mousemove', (e) => {
-    const r = hero.getBoundingClientRect();
-    if (e.clientY >= r.top && e.clientY <= r.bottom) {
-      targetMx = e.clientX - r.left;
-      targetMy = e.clientY - r.top;
+  const trackPointer = (e) => {
+    const r = canvas.getBoundingClientRect();
+    if (e.clientX >= r.left && e.clientX <= r.right && e.clientY >= r.top && e.clientY <= r.bottom) {
+      mx = e.clientX - r.left;
+      my = e.clientY - r.top;
     } else {
-      targetMx = -9999;
-      targetMy = -9999;
+      mx = -9999;
+      my = -9999;
     }
+  };
+  window.addEventListener('pointermove', trackPointer, { passive: true });
+  canvas.addEventListener('pointerleave', () => {
+    mx = -9999;
+    my = -9999;
   }, { passive: true });
 
   const field = (x, y, t) =>
-    Math.sin(x * 0.0016 + t * 0.2) * 1.6 +
-    Math.cos(y * 0.002 - t * 0.16) * 1.3;
+    Math.sin(x * 0.0016 + t * 0.22) * 1.7 +
+    Math.cos(y * 0.0021 - t * 0.16) * 1.3 +
+    Math.sin((x + y) * 0.0009 + t * 0.05) * 0.9;
 
   const step = (dt, t) => {
-    mx += (targetMx - mx) * 0.18;
-    my += (targetMy - my) * 0.18;
-
-    const isLight = document.documentElement.dataset.theme === 'light';
-
     parts.forEach((p) => {
       const a = field(p.x, p.y, t);
       let vx = Math.cos(a) * p.sp;
@@ -380,12 +412,11 @@ let globalTypewriterTick = null;
       const dx = p.x - mx;
       const dy = p.y - my;
       const dist = Math.hypot(dx, dy);
-      const RADIUS = 190;
 
-      if (dist < RADIUS && dist > 0.1) {
-        const force = (1 - dist / RADIUS) * 220;
-        vx += (dx / dist) * force - (dy / dist) * (force * 0.8);
-        vy += (dy / dist) * force + (dx / dist) * (force * 0.8);
+      if (dist < 140 && dist > 0.001) {
+        const force = (1 - dist / 140) * 90;
+        vx += (dx / dist) * force;
+        vy += (dy / dist) * force;
       }
 
       p.px = p.x;
@@ -399,17 +430,9 @@ let globalTypewriterTick = null;
         return;
       }
 
-      if (isLight) {
-        ctx.strokeStyle = p.isAccent
-          ? `rgba(107, 143, 8, ${p.a * 0.75})`
-          : `rgba(20, 22, 14, ${p.a * 0.28})`;
-      } else {
-        ctx.strokeStyle = p.isAccent
-          ? `rgba(255, 230, 0, ${p.a})`
-          : `rgba(237, 240, 227, ${p.a * 0.4})`;
-      }
-
-      ctx.lineWidth = 1.2;
+      const color = p.isAccent ? accent : ink;
+      ctx.strokeStyle = `rgba(${color[0]}, ${color[1]}, ${color[2]}, ${p.a})`;
+      ctx.lineWidth = 1;
       ctx.beginPath();
       ctx.moveTo(p.px, p.py);
       ctx.lineTo(p.x, p.y);
@@ -417,8 +440,23 @@ let globalTypewriterTick = null;
     });
   };
 
+  if (reducedMotion()) {
+    for (let i = 0; i < 70; i++) step(0.04, i * 0.04);
+    return;
+  }
+
+  let running = true;
+  let inView = true;
+  let tabVisible = !document.hidden;
+  let rafId = 0;
   let last = performance.now();
+  const frameInterval = window.matchMedia('(pointer: coarse)').matches ? 1000 / 30 : 0;
   const loop = (now) => {
+    if (!running) return;
+    if (frameInterval && now - last < frameInterval - 1) {
+      rafId = requestAnimationFrame(loop);
+      return;
+    }
     const dt = Math.min((now - last) / 1000, 0.05);
     last = now;
 
@@ -426,15 +464,37 @@ let globalTypewriterTick = null;
     ctx.fillStyle = 'rgba(0, 0, 0, 0.06)';
     ctx.fillRect(0, 0, w, h);
     ctx.globalCompositeOperation = 'source-over';
-
     step(dt, now * 0.001);
-    requestAnimationFrame(loop);
+    rafId = requestAnimationFrame(loop);
   };
 
-  requestAnimationFrame(loop);
+  const sync = () => {
+    const shouldRun = inView && tabVisible;
+    if (shouldRun === running) return;
+    running = shouldRun;
+    if (shouldRun) {
+      last = performance.now();
+      rafId = requestAnimationFrame(loop);
+    } else {
+      cancelAnimationFrame(rafId);
+    }
+  };
+
+  rafId = requestAnimationFrame(loop);
+  new IntersectionObserver((entries) => {
+    entries.forEach((entry) => { inView = entry.isIntersecting; });
+    sync();
+  }).observe(hero);
+  document.addEventListener('visibilitychange', () => {
+    tabVisible = !document.hidden;
+    sync();
+  });
+
   window.addEventListener('resize', resize);
+  if ('ResizeObserver' in window) new ResizeObserver(resize).observe(hero);
 
   new MutationObserver(() => {
+    readTokens();
     ctx.clearRect(0, 0, w, h);
   }).observe(document.documentElement, { attributes: true, attributeFilter: ['data-theme'] });
 })();
@@ -1456,7 +1516,7 @@ const CASE_ORDER = ['portfolio', 'birthday', 'github'];
       const stored = localStorage.getItem('portfolio_roles');
       if (stored) return JSON.parse(stored);
     } catch (_) {}
-    return ['UG STUDENT', 'FULL-STACK DEVELOPER', 'GRAPHICS DESIGNER', 'CREATIVE BUILDER'];
+    return ['UG STUDENT.', 'FULL-STACK DEVELOPER.', 'GRAPHICS DESIGNER.', 'CREATIVE BUILDER.'];
   };
 
   const renderRolesList = () => {
