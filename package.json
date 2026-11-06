@@ -1,0 +1,24 @@
+{
+  "name": "portfolio",
+  "version": "1.0.0",
+  "description": "Personal developer portfolio",
+  "main": "script.js",
+  "scripts": {
+    "dev": "npx http-server -p 8080 -o",
+    "test": "echo \"No tests specified\""
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/max-subh/portfolio.git"
+  },
+  "keywords": ["portfolio", "developer", "web"],
+  "author": "Subham Shit",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/max-subh/portfolio/issues"
+  },
+  "homepage": "https://github.com/max-subh/portfolio#readme",
+  "dependencies": {
+    "@vercel/speed-insights": "^2.1.0"
+  }
+}
