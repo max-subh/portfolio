@@ -2938,9 +2938,51 @@ main,
   font-variant-numeric: tabular-nums;
 }
 
+.grok-bot {
+  position: fixed;
+  right: 56px;
+  bottom: 20px;
+  z-index: 94;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  pointer-events: none;
+}
+
+.grok-bot__avatar {
+  width: 112px;
+  height: 112px;
+  display: grid;
+  place-items: center;
+  filter: drop-shadow(0 0 18px color-mix(in srgb, var(--accent) 32%, transparent));
+}
+
+.grok-bot__status {
+  margin-top: -2px;
+  padding: 5px 9px;
+  border: 1px solid var(--line-strong);
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--bg) 88%, transparent);
+  color: var(--ink-soft);
+  font-family: var(--font-mono);
+  font-size: 8px;
+  letter-spacing: .08em;
+  white-space: nowrap;
+}
+
 @media (max-width: 760px) {
   .hud-telemetry {
     display: none;
+  }
+
+  .grok-bot {
+    right: 48px;
+    bottom: 16px;
+  }
+
+  .grok-bot__avatar {
+    width: 88px;
+    height: 88px;
   }
 }
 

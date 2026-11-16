@@ -909,6 +909,11 @@ int main() {
     <span class="hud-telemetry__vel" data-telemetry-vel>0 PX/S</span>
   </div>
 
+  <div class="grok-bot" aria-label="Grok bot avatar">
+    <div class="grok-bot__avatar" data-grok-avatar></div>
+    <span class="grok-bot__status" data-grok-status aria-live="polite">GROK BOT · LOADING</span>
+  </div>
+
   <!-- Interactive Cmd+K Command Palette Modal -->
   <div class="cmdk-backdrop" id="cmdk-modal" style="display: none;" aria-hidden="true">
     <div class="cmdk-dialog" role="dialog" aria-modal="true" aria-label="Developer Command Palette">
@@ -1002,7 +1007,8 @@ int main() {
     </div>
   </div>
 
-  <script src="script.js" defer></script>
+  <script type="module" src="script.js"></script>
+  <script type="module" src="grok-bot.js"></script>
 </body>
 
 </body>

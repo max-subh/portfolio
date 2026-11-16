@@ -1,0 +1,13 @@
+{
+  "dependencies": {
+    "@bible-strong/avatar-web": "^1.2.1"
+  },
+  "devDependencies": {
+    "vite": "^8.3.8"
+  },
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build --base=./",
+    "preview": "vite preview"
+  }
+}
