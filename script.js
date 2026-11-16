@@ -1848,10 +1848,10 @@ const CASE_ORDER = ['portfolio', 'birthday', 'github'];
   if (!deck || !layers.length) return;
 
   const IMAGES = [
-    'images/profile1.jpg',
-    'images/profile2.jpg',
-    'images/profile3.jpg',
-    'images/profile4.png'
+    new URL('./images/profile1.jpg', import.meta.url).href,
+    new URL('./images/profile2.jpg', import.meta.url).href,
+    new URL('./images/profile3.jpg', import.meta.url).href,
+    new URL('./images/profile4.png', import.meta.url).href
   ];
 
   let currentIndex = 0;
