@@ -1848,10 +1848,10 @@ const CASE_ORDER = ['portfolio', 'birthday', 'github'];
   if (!deck || !layers.length) return;
 
   const IMAGES = [
-    new URL('./images/profile1.jpg', import.meta.url).href,
-    new URL('./images/profile2.jpg', import.meta.url).href,
-    new URL('./images/profile3.jpg', import.meta.url).href,
-    new URL('./images/profile4.png', import.meta.url).href
+    new URL('./images/profile1.webp', import.meta.url).href,
+    new URL('./images/profile2.webp', import.meta.url).href,
+    new URL('./images/profile3.webp', import.meta.url).href,
+    new URL('./images/profile4.webp', import.meta.url).href
   ];
 
   let currentIndex = 0;
@@ -1863,6 +1863,7 @@ const CASE_ORDER = ['portfolio', 'birthday', 'github'];
 
   IMAGES.forEach((src) => {
     const img = new Image();
+    img.decoding = 'async';
     img.src = src;
   });
 
