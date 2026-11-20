@@ -1843,7 +1843,6 @@ const CASE_ORDER = ['portfolio', 'birthday', 'github'];
 (() => {
   const deck = document.querySelector('[data-profile-photo-deck]');
   const layers = deck?.querySelectorAll('.profile-photo-layer');
-  const tagCounter = document.querySelector('[data-hud-photo-counter]');
 
   if (!deck || !layers.length) return;
 
@@ -1854,11 +1853,11 @@ const CASE_ORDER = ['portfolio', 'birthday', 'github'];
     new URL('./images/profile4.webp', import.meta.url).href
   ];
 
-  let currentIndex = 0;
+  let currentIndex = Math.floor(Math.random() * IMAGES.length);
   let isTransitioning = false;
 
   layers.forEach((layer) => {
-    layer.style.backgroundImage = `url('${IMAGES[0]}')`;
+    layer.style.backgroundImage = `url('${IMAGES[currentIndex]}')`;
   });
 
   IMAGES.forEach((src) => {
@@ -1879,9 +1878,6 @@ const CASE_ORDER = ['portfolio', 'birthday', 'github'];
     if (reducedMotion()) {
       layers[0].style.backgroundImage = `url('${nextSrc}')`;
       currentIndex = targetIdx;
-      if (tagCounter) {
-        tagCounter.textContent = `FRAME [0${currentIndex + 1}/0${IMAGES.length}]`;
-      }
       isTransitioning = false;
       return;
     }
@@ -1891,20 +1887,13 @@ const CASE_ORDER = ['portfolio', 'birthday', 'github'];
       layers[0].style.backgroundImage = `url('${nextSrc}')`;
       deck.classList.remove('is-crossfading');
       currentIndex = targetIdx;
-      if (tagCounter) {
-        tagCounter.textContent = `FRAME [0${currentIndex + 1}/0${IMAGES.length}]`;
-      }
       setTimeout(() => {
         isTransitioning = false;
       }, 700);
     }, 700);
   };
 
-  let autoTimer = setInterval(() => triggerCrossfade(), 4500);
-
   deck.addEventListener('click', () => {
-    clearInterval(autoTimer);
     triggerCrossfade();
-    autoTimer = setInterval(() => triggerCrossfade(), 4500);
   });
 })();

@@ -832,37 +832,6 @@ main,
 .hud-corner--bl { bottom: -4px; left: -4px; border-width: 0 0 2px 2px; }
 .hud-corner--br { bottom: -4px; right: -4px; border-width: 0 2px 2px 0; }
 
-/* Photo counter */
-.hud-tag {
-  position: absolute;
-  bottom: -14px;
-  left: 50%;
-  transform: translateX(-50%);
-  background: var(--bg);
-  border: 1px solid var(--line-strong);
-  padding: 4px 10px;
-  border-radius: 999px;
-  font-family: var(--font-mono);
-  font-size: 9px;
-  letter-spacing: .08em;
-  color: var(--ink-soft);
-  white-space: nowrap;
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-  box-shadow: 0 4px 14px rgba(0,0,0,0.3);
-  z-index: 4;
-}
-
-.hud-tag__dot {
-  width: 5px;
-  height: 5px;
-  border-radius: 50%;
-  background: #00ff88;
-  box-shadow: 0 0 8px #00ff88;
-  animation: pulse 1.8s infinite;
-}
-
 .hero__photo-glow {
   position: absolute;
   inset: -12px;
